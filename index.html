@@ -2,38 +2,131 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="description" content="Jeu clicker en ligne">
-    <meta name="keywords" content="clicker, jeu, en ligne, javascript, html, css">
-    <meta name="author" content="Marvin, Antoine, Idryss">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dufos clicker</title>
+    <link rel="stylesheet" href="/Clicker/public/css/root.css">
+    <link rel="stylesheet" href="public/css/styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jaro:opsz@6..72&family=Montserrat:ital,wght@0,401;1,401&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/Clicker/public/css/root.css">
-    <link rel="stylesheet" href="/Clicker/public/css/style.css">
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
-    <script src="/Clicker/controller/js/template.js" defer></script>
+    <title>Dofus Clicker</title>
 </head>
 <body>
-    
-    <main>
-        <div id="totalkamas">
-            <span id="kamasText">Kamas : </span>
-            <!-- insérer avec js le total de kamas -->
-            <div id="kamas"></div> 
+    <div class="game-container">
+        <div class="left-panel">
+            <div class="dofuss-container">
+                <div class="dofus"><img src="../assets/dofuss/red.png" alt="Red dofus"></div>
+                <div class="dofus"><img src="../assets/dofuss/yellow.png" alt="Yellow dofus"></div>
+                <div class="dofus"><img src="../assets/dofuss/blue.png" alt="Blue dofus"></div>
+                <div class="dofus"><img src="../assets/dofuss/green.png" alt="Green dofus"></div>
+                <div class="dofus"><img src="../assets/dofuss/white.png" alt="White dofus"></div>
+                <div class="dofus"><img src="../assets/dofuss/orange.png" alt="Orange dofus"></div>
+            </div>
+            <div class="character">
+                <img src="../assets/character.png" alt="Character">
+            </div>
         </div>
-        <figure>
-            <!-- insérer le perso changeant en fonction du niveau -->
-            <img src="" alt="">
-        </figure>
-        <div id="clicker">
-            <img src="/public/assets/kama.png" alt="">
+
+        <div class="center-panel">
+            <div class="header">
+                <div class="kamas-counter">
+                    <p>Kamas <br /><span class="kamas-cost red-text"></span></p>
+                </div>
+            </div>
+            
+            <div class="main-coin">
+                <div class="kama-img-container">
+                    <img src="public/assets/kamas.png" alt="Clicker Kama" class="kamas-img" onclick="incrementKamas(event)" draggable="false">
+                    <div id="particle-container"></div>
+                </div>
+            </div>
+            
+            <div class="minions-container">
+                <div class="minion-row">
+                    <div class="minion"><img src="../assets/minion1.png" alt="Minion"></div>
+                    <div class="minion"><img src="../assets/minion2.png" alt="Minion"></div>
+                    <div class="minion"><img src="../assets/minion3.png" alt="Minion"></div>
+                    <div class="minion"><img src="../assets/minion4.png" alt="Minion"></div>
+                    <div class="minion"><img src="../assets/minion5.png" alt="Minion"></div>
+                </div>
+                <div class="minion-row">
+                    <div class="minion"><img src="../assets/minion1.png" alt="Minion"></div>
+                    <div class="minion"><img src="../assets/minion2.png" alt="Minion"></div>
+                    <div class="minion"><img src="../assets/minion3.png" alt="Minion"></div>
+                    <div class="minion"><img src="../assets/minion4.png" alt="Minion"></div>
+                </div>
+            </div>
         </div>
-    </main>
 
-    <img src="" alt="">
+        <div class="right-panel">
+            <h3>Boutique</h3>
+            
+            <div class="shop-item" onclick="buyUpgrade('clicker')">
+                <img src="public/assets/click.webp" alt="Clicker" class="shop-icon">
+                <div class="shop-info">
+                    <h4>Clicker</h4>
+                    <p class="cost-text"><span class="clicker-cost"></span> <img src="public/assets/Kamas.png" class="mini-kama"></p>
+                </div>
+                <div class="shop-level">
+                    Level <span class="clicker-level">0</span>
+                    <div class="level-tooltip">
+                        +<span class="clicker-increase"></span> kamas par click
+                    </div>
+                </div>
+            </div>
 
+            <div class="shop-item" onclick="buyUpgrade('snouffle')">
+                <img src="public/assets/Snouffle.webp" alt="Snouffle" class="shop-icon">
+                <div class="shop-info">
+                    <h4>Snouffle</h4>
+                    <p class="cost-text"><span class="snouffle-cost"></span> <img src="public/assets/kamas.png" class="mini-kama"></p>
+                </div>
+                <div class="shop-level">
+                    Level <span class="snouffle-level">0</span>
+                    <div class="level-tooltip">
+                        +<span class="snouffle-increase"></span> kamas par secondes
+                    </div>
+                </div>
+            </div>
+
+            <div class="shop-item" onclick="buyUpgrade('moumoune')">
+                <img src="public/assets/Nomoon.webp" alt="Moumoune" class="shop-icon">
+                <div class="shop-info">
+                    <h4>Momoon</h4>
+                    <p class="cost-text"><span class="moumoune-cost"></span> <img src="public/assets/kamas.png" class="mini-kama"></p>
+                </div>
+                <div class="shop-level">
+                    Level <span class="moumoune-level">0</span>
+                    <div class="level-tooltip">
+                        +<span class="moumoune-increase"></span> kamas par secondes
+                    </div>
+                </div>
+            </div>
+
+            <div class="shop-item" onclick="buyUpgrade('phortiche')">
+                <img src="public/assets/phortiche.webp" alt="Phortiche" class="shop-icon">
+                <div class="shop-info">
+                    <h4>Phortiche</h4>
+                    <p class="cost-text"><span class="phortiche-cost"></span> <img src="public/assets/kamas.png" class="mini-kama"></p>
+                </div>
+                <div class="shop-level">
+                    Level <span class="phortiche-level">0</span>
+                    <div class="level-tooltip">
+                        +<span class="phortiche-increase"></span> kamas par secondes
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="statistics">
+            <div class="stats-content">
+                <p>KPC: <span id="kpc-text" class="red-text">1</span></p>
+                <p>KPS: <span id="kps-text" class="red-text">0</span></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="controller/js/index.js"></script>
+    <script src="controller/js/achievements.js"></script>
+    <div id="achievements-container"></div>
 </body>
 </html>
