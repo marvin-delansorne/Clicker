@@ -32,7 +32,7 @@ let kps = 0;
 
 function incrementKamas(e) {
     kamas.innerHTML = Math.round(parsedKamas += kpc);
-    let audio = new Audio("mixkit-coins-handling-1939.wav");
+    let audio = new Audio("./public/assets/sound/mixkit-coins-handling-1939.wav");
     audio.play().catch(e => console.warn("Erreur de lecture audio :", e));
 
     // Récupération de la position du clic
@@ -44,7 +44,7 @@ function createParticles(x, y) {
     
     for (let i = 0; i < 8; i++) {
         const particle = document.createElement('img');
-        particle.src = i % 2 === 0 ? '../assets/kamas.webp' : '../assets/Kamas.png';
+        particle.src = i % 2 === 0 ? './public/assets/Kama.webp' : './public/assets/kama.webp';
         particle.classList.add('particle');
 
         // Position initiale au point de clic exact
