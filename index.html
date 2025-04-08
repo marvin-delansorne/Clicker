@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="public/css/styles.css">
+    <title>Dofus Clicker</title>
+</head>
+<body>
+    <div class="game-container">
+        <!-- Section gauche avec personnage et dofus -->
+        <div class="left-panel">
+            <div class="dofuss-container">
+                <div class="dofus"><img src="../assets/dofuss/red.png" alt="Red dofus"></div>
+                <div class="dofus"><img src="../assets/dofuss/yellow.png" alt="Yellow dofus"></div>
+                <div class="dofus"><img src="../assets/dofuss/blue.png" alt="Blue dofus"></div>
+                <div class="dofus"><img src="../assets/dofuss/green.png" alt="Green dofus"></div>
+                <div class="dofus"><img src="../assets/dofuss/white.png" alt="White dofus"></div>
+                <div class="dofus"><img src="../assets/dofuss/orange.png" alt="Orange dofus"></div>
+            </div>
+            <div class="character">
+                <img src="../assets/character.png" alt="Character">
+            </div>
+        </div>
+
+        <!-- Section centrale -->
+        <div class="center-panel">
+            <div class="header">
+                <div class="kamas-counter">
+                    <h2>Kamas: <span class="kamas-cost">50000</span></h2>
+                </div>
+            </div>
+            
+            <div class="main-coin">
+                <img src="public/assets/kamas.png" alt="Clicker Kama" class="kamas-img" onclick="incrementKamas(event)" draggable="false">
+                <div id="particle-container"></div>
+            </div>
+            
+            <div class="minions-container">
+                <div class="minion-row">
+                    <div class="minion"><img src="../assets/minion1.png" alt="Minion"></div>
+                    <div class="minion"><img src="../assets/minion2.png" alt="Minion"></div>
+                    <div class="minion"><img src="../assets/minion3.png" alt="Minion"></div>
+                    <div class="minion"><img src="../assets/minion4.png" alt="Minion"></div>
+                    <div class="minion"><img src="../assets/minion5.png" alt="Minion"></div>
+                </div>
+                <div class="minion-row">
+                    <div class="minion"><img src="../assets/minion1.png" alt="Minion"></div>
+                    <div class="minion"><img src="../assets/minion2.png" alt="Minion"></div>
+                    <div class="minion"><img src="../assets/minion3.png" alt="Minion"></div>
+                    <div class="minion"><img src="../assets/minion4.png" alt="Minion"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section boutique droite -->
+        <div class="right-panel">
+            <h3>Boutique</h3>
+            
+            <div class="shop-item" onclick="buyClicker()">
+                <img src="public/assets/click.webp" alt="Clicker" class="shop-icon">
+                <div class="shop-info">
+                    <h4>Clicker</h4>
+                    <p>cost: <span class="clicker-cost">10</span> <img src="public/assets/Kama.webp" class="mini-kama"></p>
+                </div>
+                <div class="shop-level">
+                    Level <span class="clicker-level">0</span>
+                    <div class="level-tooltip">
+                        +<span class="clicker-increase">1</span> kamas par click
+                    </div>
+                </div>
+            </div>
+
+            <div class="shop-item" onclick="buySnouffle()">
+                <img src="public/assets/Snouffle.webp" alt="Snouffle" class="shop-icon">
+                <div class="shop-info">
+                    <h4>Snouffle</h4>
+                    <p>cost: <span class="snouffle-cost">130</span> <img src="public/assets/kamas.png" class="mini-kama"></p>
+                </div>
+                <div class="shop-level">
+                    Level <span class="snouffle-level">0</span>
+                    <div class="level-tooltip">
+                        +<span class="snouffle-increase">4</span> kamas par secondes
+                    </div>
+                </div>
+            </div>
+
+            <div class="shop-item" onclick="buyMoumoune()">
+                <img src="public/assets/Nomoon.webp" alt="Moumoune" class="shop-icon">
+                <div class="shop-info">
+                    <h4>Momoon</h4>
+                    <p>cost: <span class="moumoune-cost">850</span> <img src="public/assets/kamas.png" class="mini-kama"></p>
+                </div>
+                <div class="shop-level">
+                    Level <span class="moumoune-level">0</span>
+                    <div class="level-tooltip">
+                        +<span class="moumoune-increase">24</span> kamas par secondes
+                    </div>
+                </div>
+            </div>
+
+            <div class="shop-item" onclick="buyPhortiche()">
+                <img src="public/assets/phortiche.webp" alt="Moumoune" class="shop-icon">
+                <div class="shop-info">
+                    <h4>Phortiche</h4>
+                    <p>cost: <span class="phortiche-cost">1950</span> <img src="public/assets/kamas.png" class="mini-kama"></p>
+                </div>
+                <div class="shop-level">
+                    Level <span class="phortiche-level">0</span>
+                    <div class="level-tooltip">
+                        +<span class="phortiche-increase">24</span> kamas par secondes
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="statistics">
+        <div class="stats-content">
+            <p>KPC: <span id="kpc-text">0</span></p>
+            <p>KPS: <span id="kps-text">0</span></p>
+        </div>
+    </div>
+
+    <script src="controller/js/index.js"></script>
+</body>
+</html>

@@ -1,0 +1,264 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    height: 100vh;
+    background-image: url('../assets/bg.png'); 
+    background-size: cover;
+    background-position: center;
+    color: white;
+    user-select: none;
+    overflow: hidden;
+}
+
+.game-container {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+}
+
+.left-panel {
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.gems-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+    margin-bottom: 20px;
+}
+
+.gem img {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.gem img:hover {
+    transform: scale(1.1);
+}
+
+.character {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.character img {
+    max-width: 100%;
+    height: auto;
+}
+
+.center-panel {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.header {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.kamas-counter h2 {
+    font-size: 28px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    margin: 0;
+}
+
+.main-coin {
+    position: relative;
+    margin: 40px 0;
+}
+
+.kamas-img {
+    width: 200px;
+    height: 200px;
+    cursor: pointer;
+    transition: transform 0.1s, opacity 0.1s;
+}
+
+.kamas-img:hover {
+    opacity: 0.9;
+    transform: scale(1.05);
+}
+
+.kamas-img:active {
+    opacity: 0.8;
+    transform: scale(1.1);
+}
+
+.minions-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    margin-top: 40px;
+}
+
+.minion-row {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.minion {
+    width: 60px;
+    height: 60px;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    margin: 0 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.minion img {
+    max-width: 50px;
+    max-height: 50px;
+}
+
+.right-panel {
+    width: 20%;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.right-panel h3 {
+    font-size: 24px;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.shop-item {
+    width: 90%;
+    background-color: rgba(0, 0, 0, 0.7);
+    border: 2px solid goldenrod;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.2s;
+    position: relative;
+}
+
+.shop-item:hover {
+    transform: scale(1.03);
+    border-color: gold;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.shop-icon {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.shop-info {
+    flex-grow: 1;
+}
+
+.shop-info h4 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.shop-info p {
+    margin: 5px 0 0 0;
+    display: flex;
+    align-items: center;
+}
+
+.mini-kama {
+    width: 15px;
+    height: 15px;
+    margin-left: 5px;
+}
+
+.shop-level {
+    font-size: 14px;
+    text-align: right;
+    position: relative;
+}
+
+.level-tooltip {
+    position: absolute;
+    right: -150px;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 8px;
+    border-radius: 5px;
+    width: 140px;
+    text-align: center;
+    display: none;
+    z-index: 10;
+}
+
+.shop-item:hover .level-tooltip {
+    display: block;
+}
+
+.statistics {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.7);
+    border-top: 2px solid goldenrod;
+    border-left: 2px solid goldenrod;
+    border-right: 2px solid goldenrod;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding: 10px 30px;
+}
+
+.stats-content {
+    display: flex;
+    gap: 60px;
+}
+
+.stats-content p {
+    margin: 0;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+#particle-container {
+    position: fixed; /* Changé de 'absolute' à 'fixed' pour être relatif à la fenêtre */
+    pointer-events: none;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999; /* Assurez-vous que les particules soient au-dessus des autres éléments */
+}
+
+.particle {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    pointer-events: none;
+    animation: pop 600ms ease-out forwards;
+}
+
+@keyframes pop {
+    0% {
+        opacity: 1;
+        transform: translate(0, 0) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(var(--x), var(--y)) scale(0.5);
+    }
+}
