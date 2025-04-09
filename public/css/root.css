@@ -1,0 +1,38 @@
+/* Liens à mettre dans le head
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jaro:opsz@6..72&family=Montserrat:ital,wght@0,401;1,401&display=swap" rel="stylesheet">
+
+------------- l'appel du root doit se faire au-dessus des autres css pour éviter les réécritures
+<link rel="stylesheet" href="/Clicker/public/css/root.css">
+*/
+
+.jaro {
+    font-family: "Jaro", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+.montserrat-regu {
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
+
+:root {
+    --title-font: "jaro";
+    --main-font: "montserrat-regular";
+
+    --primary-color: #5A361A;
+    --secondary-color: #E0A905;
+    --tertiary-color: #F6F7EB;
+
+    --bg-main-opacity50: rgba(90, 54, 26, 0.5);
+}
+
+* {
+    padding: 0;
+    margin: 0;
+}
