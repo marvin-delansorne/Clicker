@@ -195,7 +195,6 @@ body {
     margin-bottom: 30px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
-
 .shop-item {
     width: 90%;
     background-color: rgba(0, 0, 0, 0.7);
@@ -211,14 +210,9 @@ body {
 }
 
 .shop-item:hover {
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.shop-item .shop-icon {
-    width: 64px;
-    height: 64px;
-    margin-right: 10px;
+    transform: scale(1.03);
+    border-color: gold;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
 }
 
 .shop-icon {
@@ -598,6 +592,33 @@ body {
     border: none;
     cursor: pointer;
     padding-left: 2%;
+}
+
+.spin-wheel-btn img {
+    animation: moveRandom 2s infinite ease-in-out; /* Animation infinie */
+    transition: transform 0.3s ease;
+}
+
+.spin-wheel-btn img:hover {
+    transform: scale(1.1); /* Agrandit légèrement l'image au survol */
+}
+
+@keyframes moveRandom {
+    0% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+    25% {
+        transform: translate(10px, -10px) rotate(10deg);
+    }
+    50% {
+        transform: translate(-10px, 10px) rotate(-10deg);
+    }
+    75% {
+        transform: translate(10px, 10px) rotate(5deg);
+    }
+    100% {
+        transform: translate(0, 0) rotate(0deg);
+    }
 }
 
 #toast-container {

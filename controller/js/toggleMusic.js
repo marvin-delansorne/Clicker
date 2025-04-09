@@ -11,11 +11,12 @@ function toggleMusic() {
     }
 }
 
-// Optionnel : Lancer la musique automatiquement au chargement de la page
+// Désactiver la musique par défaut au chargement de la page
 window.addEventListener("DOMContentLoaded", () => {
     const music = document.getElementById("background-music");
-    music.volume = 0.5; // Réglez le volume initial
-    music.play().catch(() => {
-        console.log("Lecture automatique bloquée par le navigateur.");
-    });
+    const musicIcon = document.getElementById("music-icon");
+
+    // Désactiver la musique et définir l'icône sur "Music Off"
+    music.pause();
+    musicIcon.src = "./public/assets/music-off.png";
 });
