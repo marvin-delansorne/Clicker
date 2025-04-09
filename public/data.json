@@ -3,6 +3,12 @@
         {
             "nom": "Pandawa",
             "image": "/Clicker/public/assets/personnage/pandawa.png",
+            "baseCost": 4950,
+            "baseIncrease": 82,
+            "kamaMultiplier": 1.04,
+            "costMultiplier": 1.10,
+            "affects": "kps",
+            "level": 0,
             "nom-sort": "Picole",
             "attribut": 1,
             "cara-sort": "Réduit de 1% le coût des améliorations"
@@ -10,6 +16,12 @@
         {
             "nom": "Crâ",
             "image": "/Clicker/public/assets/personnage/cra.png",
+            "baseCost": 4950,
+            "baseIncrease": 82,
+            "kamaMultiplier": 1.04,
+            "costMultiplier": 1.10,
+            "affects": "kps",
+            "level": 0,
             "nom-sort": "Tir à l'arc",
             "attribut": 1,
             "cara-sort": "Augmente de 1% les revenus au clic"
@@ -17,6 +29,12 @@
         {
             "nom": "Ecaflip",
             "image": "/Clicker/public/assets/personnage/ecaflip.png",
+            "baseCost": 4950,
+            "baseIncrease": 82,
+            "kamaMultiplier": 1.04,
+            "costMultiplier": 1.10,
+            "affects": "kps",
+            "level": 0,
             "nom-sort": "Chance d'écaflip",
             "attribut": 1,
             "cara-sort": "(Coût faible) 1 chance sur deux d'obtenir une boîte mystère"
@@ -24,6 +42,12 @@
         {
             "nom": "Huppermage",
             "image": "/Clicker/public/assets/personnage/huppermage.png",
+            "baseCost": 4950,
+            "baseIncrease": 82,
+            "kamaMultiplier": 1.04,
+            "costMultiplier": 1.10,
+            "affects": "kps",
+            "level": 0,
             "nom-sort": "Epée d'huppermage",
             "attribut": 0.5,
             "cara-sort": "Augmente d'0.5% les revenus au passif"
@@ -31,6 +55,12 @@
         {
             "nom": "Sacrieur",
             "image": "/Clicker/public/assets/personnage/sacrieur.png",
+            "baseCost": 4950,
+            "baseIncrease": 82,
+            "kamaMultiplier": 1.04,
+            "costMultiplier": 1.10,
+            "affects": "kps",
+            "level": 0,
             "nom-sort": "Auto-flagellation",
             "attribut": 50,
             "cara-sort": "soit Gain de 50% tes kamas soit te faire perdre les kamas soit tous les niveaux d'une amélioration"
@@ -38,6 +68,12 @@
         {
             "nom": "Zobal",
             "image": "/Clicker/public/assets/personnage/zobal.png",
+            "baseCost": 4950,
+            "baseIncrease": 82,
+            "kamaMultiplier": 1.04,
+            "costMultiplier": 1.10,
+            "affects": "kps",
+            "level": 0,
             "nom-sort": "Masque de clown",
             "attribut": 1,
             "cara-sort": "Coût fixe comme Ecaflip. Change ton skin de l'énutrof"
@@ -45,6 +81,12 @@
         {
             "nom": "Xélor",
             "image": "/Clicker/public/assets/personnage/xelor.png",
+            "baseCost": 4950,
+            "baseIncrease": 82,
+            "kamaMultiplier": 1.04,
+            "costMultiplier": 1.10,
+            "affects": "kps",
+            "level": 0,
             "nom-sort": "Gain de temps",
             "attribut": 1.1,
             "cara-sort": "Augmente ton clic de x1.1 de rendement"
@@ -52,6 +94,12 @@
         {
             "nom": "Iop",
             "image": "/Clicker/public/assets/personnage/iop.png",
+            "baseCost": 4950,
+            "baseIncrease": 82,
+            "kamaMultiplier": 1.04,
+            "costMultiplier": 1.10,
+            "affects": "kps",
+            "level": 0,
             "nom-sort": "Colère de Iop",
             "attribut": 1,
             "cara-sort": "Augmente tes améliorations d'1 niveau"
@@ -66,7 +114,7 @@
         {
             "nom": "Pourpre",
             "image": "/Clicker/public/assets/dofus/pourpre.png",
-            "cara-dofus": "N’a aucun effet"
+            "cara-dofus": "N'a aucun effet"
         },
         {
             "nom": "Ébène",
@@ -86,7 +134,7 @@
         {
             "nom": "Turquoise",
             "image": "/Clicker/public/assets/dofus/turquoise.png",
-            "cara-dofus": "Débloque l’huppermage si déjà débloqué augmente de 3 son niveau"
+            "cara-dofus": "Débloque l'huppermage si déjà débloqué augmente de 3 son niveau"
         }
     ]
 }

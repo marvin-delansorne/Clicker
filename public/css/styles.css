@@ -139,35 +139,49 @@ body {
     transform: scale(1.1);
 }
 
-.minions-container {
+.chars-container {
+    width: 40%;
     display: flex;
-    flex-direction: column;
-    width: 100%;
-    align-items: center;
-    margin-top: 40px;
-}
-
-.minion-row {
-    display: flex;
+    flex-wrap: wrap;
     justify-content: center;
-    margin-bottom: 10px;
-}
-
-.minion {
-    width: 60px;
-    height: 60px;
-    background-color: rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    margin: 0 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-}
-
-.minion img {
-    max-width: 50px;
-    max-height: 50px;
+    align-items: flex-end;
+    gap: 10px;
+    .charDiv {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 50%;
+        #charLvl {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+        }
+        .charLvl-hidden {
+            visibility: hidden;
+        }
+        #charImg {
+            filter: brightness(0%);
+            opacity: 70%;
+            width: 50px;
+            height: auto;
+            padding: 10px 10px 0 10px;
+        }
+        #charImg:hover {
+            opacity: 100%;
+            scale: 1.1;
+            cursor: pointer;
+        }
+        span {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            text-align: center;
+            img {
+                height: 20px;
+                width: auto;
+            }
+        }
+    }
 }
 
 .right-panel {
