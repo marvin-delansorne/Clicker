@@ -350,6 +350,17 @@ body {
     align-items: center;
 }
 
+.selection-bar {
+    position: absolute;
+    left: 50%; /* Centré horizontalement */
+    top: 50%; /* Centré verticalement */
+    width: 100%;
+    height: 4px;
+    background-color: #f8d485; /* Couleur dorée */
+    z-index: 10;
+    transform: translateY(-50%);
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
 
 @keyframes pop {
     0% {
@@ -558,32 +569,48 @@ body {
 }
 .wheel-container {
     position: relative;
-    width: 100%;
-    height: 200px; 
-    overflow: hidden; 
+    width: 100%; /* Largeur de la roue */
+    height: 200px; /* Hauteur de la roue */
+    overflow: hidden; /* Cache les Dofus en dehors de la zone visible */
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
+.dofus-item{
+    border-left: solid 2px black;
+}
 
 .dofus-wheel {
-    display: flex;
-    gap: 10px;
-    transition: transform 1s ease-out; /* Transition pour un effet fluide */
-    
-}
-.dofus-wheel.spin {
-    animation: carousel-animation 10s linear infinite; 
+    background-color: var(--secondary-color);
+    display: flex; /* Aligne les Dofus horizontalement */
+    gap: 20px; /* Espacement entre les Dofus */
+    transform: translateX(0); /* Position initiale */
 }
 
-@keyframes carousel-animation {
+.dofus-wheel.spin {
+    animation: scrollInfinite 3s linear infinite; /* Animation activée uniquement pendant le spin */
+}
+
+@keyframes scrollInfinite {
     from {
         transform: translateX(0);
     }
     to {
-        transform: translateX(-100%);
-    }  
+        transform: translateX(-50%); /* Défilement vers la gauche */
+    }
+}
+
+.selection-bar {
+    position: absolute;
+    top: 0;
+    left: 50%; /* Centré horizontalement */
+    width: 4px;
+    height: 100%; /* Barre verticale sur toute la hauteur */
+    background-color: #f8d485; /* Couleur dorée */
+    z-index: 10;
+    transform: translateX(-50%);
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
 }
 
 .spin-btn {
@@ -609,12 +636,21 @@ body {
 }
 
 .spin-wheel-btn img {
-    animation: moveRandom 2s infinite ease-in-out; /* Animation infinie */
+    animation: slowSpin 10s linear infinite; /* Animation infinie avec une rotation lente */
     transition: transform 0.3s ease;
 }
 
 .spin-wheel-btn img:hover {
     transform: scale(1.1); /* Agrandit légèrement l'image au survol */
+}
+
+@keyframes slowSpin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg); /* Rotation complète */
+    }
 }
 
 @keyframes moveRandom {
@@ -636,20 +672,28 @@ body {
 }
 
 #toast-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
     position: fixed;
     width: 70%;
     height: 20%;
     top: 10%; /* Centré verticalement */
-    left: 40%; /* Centré horizontalement */
+    left: 39%; /* Centré horizontalement */
     padding: 20px;
     transform: translate(-50%, -50%);
     z-index: 1005;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+    
 }
 
 .toast {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
     background-color: #4a2c0d;
     color: #f8d485;
     border: solid 2px #f8d485;
