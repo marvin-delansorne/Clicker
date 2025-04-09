@@ -7,21 +7,36 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jaro:opsz@6..72&family=Montserrat:ital,wght@0,401;1,401&display=swap" rel="stylesheet">
+    <script src="./controller/js/index.js" defer></script>
+    <script src="./controller/js/achievements.js" defer></script> 
+    <script src="controller/js/mysteryBox.js" defer></script>
+
+ 
     <title>Dofus Clicker</title>
 </head>
 <body>
     <div class="game-container">
         <div class="left-panel">
-            <div class="dofuss-container">
-                <div class="dofus"><img src="../assets/dofuss/red.png" alt="Red dofus"></div>
-                <div class="dofus"><img src="../assets/dofuss/yellow.png" alt="Yellow dofus"></div>
-                <div class="dofus"><img src="../assets/dofuss/blue.png" alt="Blue dofus"></div>
-                <div class="dofus"><img src="../assets/dofuss/green.png" alt="Green dofus"></div>
-                <div class="dofus"><img src="../assets/dofuss/white.png" alt="White dofus"></div>
-                <div class="dofus"><img src="../assets/dofuss/orange.png" alt="Orange dofus"></div>
+            <button class="spin-wheel-btn">
+                <img src="./public/assets/buttonwheel.png" alt="Roulette" width="250" height="250">
+            </button>
+            
+            <div id="wheel-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close-btn" onclick="closeWheelModal()">&times;</span>
+                    <h2>Roulette Mystère</h2>
+                    <div class="wheel-container">
+                        <div class="center-marker"></div>
+                        <div class="dofus-wheel">
+                            <!-- Les items seront générés dynamiquement par JavaScript -->
+                        </div>
+                    </div>
+                    <button class="spin-btn" onclick="spinWheel()">Lancer la roue (50 000 kamas)</button>
+                </div>
             </div>
+            
             <div class="character">
-                <img src="../assets/character.png" alt="Character">
+                <img src="./public/assets/character.png" alt="character">
             </div>
         </div>
 
@@ -124,8 +139,8 @@
         </div>
     </div>
 
-    <script src="controller/js/index.js"></script>
-    <script src="controller/js/achievements.js"></script>
     <div id="achievements-container"></div>
+    <div id="toast-container"></div>
+   
 </body>
 </html>
