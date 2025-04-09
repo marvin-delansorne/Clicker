@@ -1,7 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
+
+.jaro {
+    font-family: "Jaro", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+.montserrat-regu {
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
+
+:root {
+    --title-font: "jaro";
+    --main-font: "montserrat-regular";
+
+    --primary-color: #5A361A;
+    --secondary-color: #E0A905;
+    --tertiary-color: #F6F7EB;
+
+    --bg-main-opacity50: rgba(90, 54, 26, 0.5);
+}
+
+
 body {
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
+    font-family: 'Quicksand', sans-serif;
     height: 100vh;
     background-image: url('../assets/bg.png'); 
     background-size: cover;
@@ -18,10 +46,22 @@ body {
 }
 
 .left-panel {
+    background-color: var(--bg-main-opacity50);
     width: 20%;
     display: flex;
     flex-direction: column;
-    padding: 10px;
+    padding: 10px;;
+}
+
+.red-text{
+    font-size: 32px;
+    color: red;
+    font-weight: 700;
+    text-shadow: 2px 2px 3px rgb(90, 90, 90);
+}
+
+.cost-text {
+    font-size: 18px;
 }
 
 .gems-container {
@@ -66,8 +106,9 @@ body {
     margin-bottom: 20px;
 }
 
-.kamas-counter h2 {
-    font-size: 28px;
+.kamas-counter p {
+    font-size: 24px;
+    font-weight: 300;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     margin: 0;
 }
@@ -75,6 +116,10 @@ body {
 .main-coin {
     position: relative;
     margin: 40px 0;
+}
+
+.kama-img-container {
+    position: relative;
 }
 
 .kamas-img {
@@ -142,9 +187,9 @@ body {
 .shop-item {
     width: 90%;
     background-color: rgba(0, 0, 0, 0.7);
-    border: 2px solid goldenrod;
+    border: 3px solid goldenrod;
     border-radius: 10px;
-    padding: 10px;
+    padding: 13px 20px;
     margin-bottom: 15px;
     display: flex;
     align-items: center;
@@ -186,9 +231,28 @@ body {
     align-items: center;
 }
 
+.shop-item.max-level {
+    opacity: 0.7;
+    cursor: not-allowed;
+    position: relative;
+}
+
+.shop-item.max-level::after {
+    content: "MAX";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
 .mini-kama {
-    width: 15px;
-    height: 15px;
+    width: 25px;
+    height: 25px;
     margin-left: 5px;
 }
 
@@ -241,13 +305,13 @@ body {
 }
 
 #particle-container {
-    position: fixed; /* Changé de 'absolute' à 'fixed' pour être relatif à la fenêtre */
+    position: fixed;
     pointer-events: none;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 9999; /* Assurez-vous que les particules soient au-dessus des autres éléments */
+    z-index: 9999;
 }
 
 .particle {
@@ -276,6 +340,160 @@ body {
     100% {
         opacity: 0;
         transform: translate(var(--x), var(--y)) scale(0.5);
+    }
+}
+
+.fade-up {
+    animation: fade-up 1s;
+}
+
+@keyframes fade-up {
+    0%{
+        transform: translateY(0);
+        opacity: 1;
+    }
+    20% {
+        transform: translateY(-5px);
+        opacity: 0.9;
+    }
+    40% {
+        transform: translateY(-13px);
+        opacity: 0.75;
+    }
+    60% {
+        transform: translateY(-25px);
+        opacity: 0.55;
+    }
+    80% {
+        transform: translateY(-42px);
+        opacity: 0.3;
+    }
+    100% {
+        transform: translateY(-65px);
+        opacity: 0;
+    }
+}
+
+#achievements-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 300px;
+    z-index: 100;
+}
+
+.achievements-title {
+    background-color: #4a2c0d;
+    color: #f8d485;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    font-family: 'Quicksand', sans-serif;
+}
+
+.achievements-title:hover {
+    background-color: #5a3c1d;
+    transform: translateY(-2px);
+}
+
+.achievements-list {
+    max-height: 400px;
+    overflow-y: auto;
+    background-color: #2a1a05;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    margin-top: 10px;
+    display: none;
+}
+
+.achievement-item {
+    padding: 10px;
+    border-bottom: 1px solid #4a2c0d;
+    display: flex;
+    align-items: center;
+}
+
+.achievement-item.unlocked {
+    background-color: rgba(78, 130, 78, 0.2);
+}
+
+.achievement-item.locked {
+    opacity: 0.7;
+}
+
+.achievement-icon {
+    font-size: 24px;
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+
+.achievement-info {
+    flex-grow: 1;
+}
+
+.achievement-info h4 {
+    margin: 0 0 5px 0;
+    color: #f8d485;
+    font-family: 'Quicksand', sans-serif;
+}
+
+.achievement-info p {
+    margin: 0;
+    font-size: 12px;
+    color: #d4b97a;
+    font-family: 'Quicksand', sans-serif;
+}
+
+.achievement-reward {
+    color: #8bc34a !important;
+    font-weight: bold;
+    margin-top: 5px !important;
+}
+
+.achievement-progress {
+    color: #a1887f !important;
+    font-style: italic;
+    margin-top: 5px !important;
+}
+
+.achievement-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 300px;
+    background-color: #4a2c0d;
+    border-left: 5px solid #f8d485;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    display: none;
+    transform: translateX(100%);
+}
+
+.achievement-notification.show {
+    display: block;
+    animation: slideIn 0.5s forwards, fadeOut 0.5s 4.5s forwards; /* 4.5s avant le fadeOut */
+}
+
+@keyframes slideIn {
+    from { transform: translateX(100%); }
+    to { transform: translateX(0); }
+}
+
+@keyframes fadeOut {
+    from { 
+        transform: translateX(0);
+        opacity: 1; 
+    }
+    to { 
+        transform: translateX(100%);
+        opacity: 0; 
     }
 }
 

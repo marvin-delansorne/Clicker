@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="public/css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jaro:opsz@6..72&family=Montserrat:ital,wght@0,401;1,401&display=swap" rel="stylesheet">
        <script src="./controller/js/index.js" defer></script>
     <script src="controller/js/mysteryBox.js" derfer></script>
  
@@ -11,7 +14,6 @@
 </head>
 <body>
     <div class="game-container">
-        <!-- Section gauche avec personnage et dofus -->
         <div class="left-panel">
             <div class="center-panel">
                 <button class="spin-wheel-btn" onclick="openWheelModal()"><img src="./public/assets/buttonwheel.png" alt="Roulette"width="250px"height="250px"></button>
@@ -38,17 +40,18 @@
             </div>
         </div>
 
-        <!-- Section centrale -->
         <div class="center-panel">
             <div class="header">
                 <div class="kamas-counter">
-                    <h2>Kamas: <span class="kamas-cost">50000</span></h2>
+                    <p>Kamas <br /><span class="kamas-cost red-text"></span></p>
                 </div>
             </div>
             
             <div class="main-coin">
-                <img src="public/assets/kamas.png" alt="Clicker Kama" class="kamas-img" onclick="incrementKamas(event)" draggable="false">
-                <div id="particle-container"></div>
+                <div class="kama-img-container">
+                    <img src="public/assets/kamas.png" alt="Clicker Kama" class="kamas-img" onclick="incrementKamas(event)" draggable="false">
+                    <div id="particle-container"></div>
+                </div>
             </div>
             
             <div class="minions-container">
@@ -68,80 +71,74 @@
             </div>
         </div>
 
-        <!-- Section boutique droite -->
         <div class="right-panel">
             <h3>Boutique</h3>
             
-            <div class="shop-item" onclick="buyClicker()">
+            <div class="shop-item" onclick="buyUpgrade('clicker')">
                 <img src="public/assets/click.webp" alt="Clicker" class="shop-icon">
                 <div class="shop-info">
                     <h4>Clicker</h4>
-                    <p>cost: <span class="clicker-cost">10</span> <img src="public/assets/Kama.webp" class="mini-kama"></p>
+                    <p class="cost-text"><span class="clicker-cost"></span> <img src="public/assets/Kamas.png" class="mini-kama"></p>
                 </div>
                 <div class="shop-level">
                     Level <span class="clicker-level">0</span>
                     <div class="level-tooltip">
-                        +<span class="clicker-increase">1</span> kamas par click
+                        +<span class="clicker-increase"></span> kamas par click
                     </div>
                 </div>
             </div>
 
-            <div class="shop-item" onclick="buySnouffle()">
+            <div class="shop-item" onclick="buyUpgrade('snouffle')">
                 <img src="public/assets/Snouffle.webp" alt="Snouffle" class="shop-icon">
                 <div class="shop-info">
                     <h4>Snouffle</h4>
-                    <p>cost: <span class="snouffle-cost">130</span> <img src="public/assets/kamas.png" class="mini-kama"></p>
+                    <p class="cost-text"><span class="snouffle-cost"></span> <img src="public/assets/kamas.png" class="mini-kama"></p>
                 </div>
                 <div class="shop-level">
                     Level <span class="snouffle-level">0</span>
                     <div class="level-tooltip">
-                        +<span class="snouffle-increase">4</span> kamas par secondes
+                        +<span class="snouffle-increase"></span> kamas par secondes
                     </div>
                 </div>
             </div>
 
-            <div class="shop-item" onclick="buyMoumoune()">
+            <div class="shop-item" onclick="buyUpgrade('moumoune')">
                 <img src="public/assets/Nomoon.webp" alt="Moumoune" class="shop-icon">
                 <div class="shop-info">
                     <h4>Momoon</h4>
-                    <p>cost: <span class="moumoune-cost">850</span> <img src="public/assets/kamas.png" class="mini-kama"></p>
+                    <p class="cost-text"><span class="moumoune-cost"></span> <img src="public/assets/kamas.png" class="mini-kama"></p>
                 </div>
                 <div class="shop-level">
                     Level <span class="moumoune-level">0</span>
                     <div class="level-tooltip">
-                        +<span class="moumoune-increase">24</span> kamas par secondes
+                        +<span class="moumoune-increase"></span> kamas par secondes
                     </div>
                 </div>
             </div>
 
-            <div class="shop-item" onclick="buyPhortiche()">
-                <img src="public/assets/phortiche.webp" alt="Moumoune" class="shop-icon">
+            <div class="shop-item" onclick="buyUpgrade('phortiche')">
+                <img src="public/assets/phortiche.webp" alt="Phortiche" class="shop-icon">
                 <div class="shop-info">
                     <h4>Phortiche</h4>
-                    <p>cost: <span class="phortiche-cost">1950</span> <img src="public/assets/kamas.png" class="mini-kama"></p>
+                    <p class="cost-text"><span class="phortiche-cost"></span> <img src="public/assets/kamas.png" class="mini-kama"></p>
                 </div>
                 <div class="shop-level">
                     Level <span class="phortiche-level">0</span>
                     <div class="level-tooltip">
-                        +<span class="phortiche-increase">24</span> kamas par secondes
+                        +<span class="phortiche-increase"></span> kamas par secondes
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="statistics">
-        <div class="stats-content">
-            <p>KPC: <span id="kpc-text">0</span></p>
-            <p>KPS: <span id="kps-text">0</span></p>
+        <div class="statistics">
+            <div class="stats-content">
+                <p>KPC: <span id="kpc-text" class="red-text">1</span></p>
+                <p>KPS: <span id="kps-text" class="red-text">0</span></p>
+            </div>
         </div>
     </div>
 
-    <div id="mystery-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal()">&times;</span>
-            <p id="modal-message"></p>
-        </div>
-    </div>
+    <script src="controller/js/index.js"></script>
 </body>
 </html>
