@@ -13,7 +13,7 @@ function handleMysteryBoxClick(imageSrc) {
     // Vérifier l'image cliquée
     if (imageSrc.includes("dofusocre.png")) {
         parsedKamas += 100000; // Ajouter 100 000 kamas
-        kamas.innerHTML = Math.round(parsedKamas);
+        elements.kamas.innerHTML = Math.round(parsedKamas);
         showModal("Félicitations ! Vous avez gagné 100 000 kamas !");
     } else {
         showModal("Ceci n'est pas encore prêt, mais bientôt !");
@@ -46,17 +46,17 @@ function closeWheelModal() {
 }
 
 function spinWheel() {
-    const spinCost = 30000; // Coût pour lancer la roue
+    console.log("SpinWheel appelé, parsedKamas avant :", parsedKamas);
+    const spinCost = 30000;
 
-    // Vérifie si le joueur a assez de kamas
     if (parsedKamas < spinCost) {
         alert("Vous n'avez pas assez de kamas pour lancer la roue !");
         return;
     }
 
-    // Déduit le coût
     parsedKamas -= spinCost;
-    kamas.innerHTML = Math.round(parsedKamas);
+    console.log("parsedKamas après déduction :", parsedKamas);
+    elements.kamas.innerHTML = Math.round(parsedKamas);
 
     if (isSpinning) return; // Empêche de relancer la roue pendant qu'elle tourne
     isSpinning = true;
@@ -78,7 +78,7 @@ function spinWheel() {
         // Affiche le résultat
         if (selectedDofus.src.includes("dofusocre.png")) {
             parsedKamas += 100000; // Ajoute 100 000 kamas
-            kamas.innerHTML = Math.round(parsedKamas);
+            elements.kamas.innerHTML = Math.round(parsedKamas);
             alert("Félicitations ! Vous avez gagné 100 000 kamas !");
         } else {
             alert("Ceci n'est pas encore prêt, mais bientôt !");
