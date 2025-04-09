@@ -10,6 +10,7 @@
        <script src="./controller/js/index.js" defer></script>
         <script src="./controller/js/achievements.js" defer></script> 
         <script src="controller/js/mysteryBox.js" defer></script>
+        <script src="./controller/js/toggleMusic.js"></script>
 
  
     <title>Dofus Clicker</title>
@@ -44,8 +45,12 @@
 
         <div class="center-panel">
             <div class="header">
+                <div class="music-toggle">
+                    <img id="music-icon" src="./public/assets/music-on.png" alt="Music Toggle" onclick="toggleMusic()" draggable="false">
+                </div>
                 <div class="kamas-counter">
                     <p>Kamas <br /><span class="kamas-cost red-text"></span></p>
+
                 </div>
             </div>
             
@@ -141,8 +146,13 @@
         </div>
     </div>
 
+
+
     <div id="achievements-container"></div>
     <div id="toast-container"></div>
+    <audio id="background-music" loop>
+        <source src="./public/assets/sound/Dofus Fan OST I - Ballade en Amakna.mp3" type="audio/mpeg">
+    </audio>
    
 </body>
 </html>

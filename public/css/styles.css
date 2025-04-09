@@ -212,7 +212,6 @@ body {
 
 .shop-item:hover {
     cursor: pointer;
-    background-color: #f0f0f0;
     transition: 0.3s;
 }
 
@@ -654,5 +653,22 @@ body {
         opacity: 0;
         transform: translateY(20px);
     }
+}
+
+.music-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+}
+
+.music-toggle img {
+    width: 40px;
+    height: 40px;
+    transition: transform 0.3s ease;
+}
+
+.music-toggle img:hover {
+    transform: scale(1.1);
 }
 
