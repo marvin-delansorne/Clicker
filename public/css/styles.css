@@ -567,7 +567,7 @@ body {
     
 }
 .dofus-wheel.spin {
-    animation: carousel-animation 3s linear infinite; 
+    animation: carousel-animation 10s linear infinite; 
 }
 
 @keyframes carousel-animation {
@@ -618,6 +618,7 @@ body {
 .toast {
     background-color: #4a2c0d;
     color: #f8d485;
+    border: solid 2px #f8d485;
     padding: 15px 20px;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);

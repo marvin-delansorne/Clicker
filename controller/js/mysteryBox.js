@@ -16,7 +16,7 @@ function handleMysteryBoxClick(imageSrc) {
         elements.kamas.innerHTML = Math.round(parsedKamas);
         showModal("Félicitations ! Vous avez gagné 100 000 kamas !");
     } else {
-        showModal("Ceci n'est pas encore prêt, mais bientôt !");
+        showModal("Ceci n'est pas encore prêt, mais bientôt !", "./public/assets/dofusocre.png");
     }
 }
 
@@ -81,33 +81,60 @@ function spinWheel() {
         if (selectedDofus.src.includes("dofusocre.png")) {
             parsedKamas += 100000; // Ajoute 100 000 kamas
             elements.kamas.innerHTML = Math.round(parsedKamas);
-            showToast("Félicitations ! Vous avez gagné 100 000 kamas !", "wheel-toast");
+            showToast(
+                "Félicitations ! Vous avez gagné 100 000 kamas !",
+                "wheel-toast",
+                "./public/assets/dofusocre.png"
+            );
         } else {
-            showToast("Ceci n'est pas encore prêt, mais bientôt !", "wheel-toast");
+            showToast("Ceci n'est pas encore prêt, mais bientôt !", "wheel-toast",  "./public/assets/dofusocre.png");
         }
 
         isSpinning = false; // Permet de relancer la roue
-    }, 3000); // Temps augmenté à 3 secondes
+    }, 3000);
 }
 
-function initializeCarousel() {
+function duplicateDofus() {
     const wheel = document.querySelector(".dofus-wheel");
-    const dofusItems = Array.from(wheel.children);
+    if (!wheel) {
+        console.error("Le conteneur .dofus-wheel est introuvable !");
+        return;
+    }
 
-    // Duplique les Dofus pour créer un effet infini
-    dofusItems.forEach((item) => {
-        const clone = item.cloneNode(true);
-        wheel.appendChild(clone);
-    });
+    const dofusItems = Array.from(wheel.children);
+    const initialCount = dofusItems.length;
+    const targetCount = 46; // Nombre total de Dofus souhaité
+
+    // Duplique les Dofus jusqu'à atteindre le nombre souhaité
+    while (wheel.children.length < targetCount) {
+        dofusItems.forEach((item) => {
+            if (wheel.children.length < targetCount) {
+                const clone = item.cloneNode(true); // Clone chaque Dofus
+                wheel.appendChild(clone); // Ajoute le clone à la roue
+            }
+        });
+    }
+
+    console.log("Dofus dupliqués :", wheel.children.length);
 }
 
-function showToast(message, customClass = "") {
+function showToast(message, customClass = "", imageSrc = null) {
     const toastContainer = document.getElementById("toast-container");
+
+    if (!toastContainer) {
+        console.error("Toast container introuvable !");
+        return;
+    }
 
     // Crée un nouvel élément toast
     const toast = document.createElement("div");
     toast.className = `toast show ${customClass}`;
-    toast.textContent = message;
+
+    // Ajoute le contenu du toast
+    toast.innerHTML = `
+        ${imageSrc ? `<img src="${imageSrc}" alt="Dofus" class="toast-image">` : ""}
+        <span>${message}</span>
+    `;
 
     // Ajoute le toast au conteneur
     toastContainer.appendChild(toast);
@@ -120,4 +147,4 @@ function showToast(message, customClass = "") {
 }
 
 // Appelez cette fonction lorsque la page est chargée
-window.addEventListener("DOMContentLoaded", initializeCarousel);
+window.addEventListener("DOMContentLoaded", duplicateDofus);
