@@ -14,19 +14,6 @@
             "cara-sort": "Réduit de 1% le coût des améliorations"
         },
         {
-            "nom": "Crâ",
-            "image": "/Clicker/public/assets/personnage/cra.png",
-            "baseCost": 4950,
-            "baseIncrease": 82,
-            "kamaMultiplier": 1.04,
-            "costMultiplier": 1.10,
-            "affects": "kps",
-            "level": 0,
-            "nom-sort": "Tir à l'arc",
-            "attribut": 1,
-            "cara-sort": "Augmente de 1% les revenus au clic"
-        },
-        {
             "nom": "Ecaflip",
             "image": "/Clicker/public/assets/personnage/ecaflip.png",
             "baseCost": 4950,
@@ -38,19 +25,6 @@
             "nom-sort": "Chance d'écaflip",
             "attribut": 1,
             "cara-sort": "(Coût faible) 1 chance sur deux d'obtenir une boîte mystère"
-        },
-        {
-            "nom": "Huppermage",
-            "image": "/Clicker/public/assets/personnage/huppermage.png",
-            "baseCost": 4950,
-            "baseIncrease": 82,
-            "kamaMultiplier": 1.04,
-            "costMultiplier": 1.10,
-            "affects": "kps",
-            "level": 0,
-            "nom-sort": "Epée d'huppermage",
-            "attribut": 0.5,
-            "cara-sort": "Augmente d'0.5% les revenus au passif"
         },
         {
             "nom": "Sacrieur",
@@ -79,6 +53,32 @@
             "cara-sort": "Coût fixe comme Ecaflip. Change ton skin de l'énutrof"
         },
         {
+            "nom": "Iop",
+            "image": "/Clicker/public/assets/personnage/iop.png",
+            "baseCost": 4950,
+            "baseIncrease": 82,
+            "kamaMultiplier": 1.04,
+            "costMultiplier": 1.10,
+            "affects": "kps",
+            "level": 0,
+            "nom-sort": "Colère de Iop",
+            "attribut": 1,
+            "cara-sort": "Augmente tes améliorations d'1 niveau"
+        },
+        {
+            "nom": "Crâ",
+            "image": "/Clicker/public/assets/personnage/cra.png",
+            "baseCost": 4950,
+            "baseIncrease": 82,
+            "kamaMultiplier": 1.04,
+            "costMultiplier": 1.10,
+            "affects": "kps",
+            "level": 0,
+            "nom-sort": "Tir à l'arc",
+            "attribut": 1,
+            "cara-sort": "Augmente de 1% les revenus au clic"
+        },
+        {
             "nom": "Xélor",
             "image": "/Clicker/public/assets/personnage/xelor.png",
             "baseCost": 4950,
@@ -92,17 +92,17 @@
             "cara-sort": "Augmente ton clic de x1.1 de rendement"
         },
         {
-            "nom": "Iop",
-            "image": "/Clicker/public/assets/personnage/iop.png",
+            "nom": "Huppermage",
+            "image": "/Clicker/public/assets/personnage/huppermage.png",
             "baseCost": 4950,
             "baseIncrease": 82,
             "kamaMultiplier": 1.04,
             "costMultiplier": 1.10,
             "affects": "kps",
             "level": 0,
-            "nom-sort": "Colère de Iop",
-            "attribut": 1,
-            "cara-sort": "Augmente tes améliorations d'1 niveau"
+            "nom-sort": "Epée d'huppermage",
+            "attribut": 0.5,
+            "cara-sort": "Augmente d'0.5% les revenus au passif"
         }
     ],
     "dofus": [
