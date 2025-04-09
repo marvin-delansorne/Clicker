@@ -43,6 +43,9 @@ function openWheelModal() {
 function closeWheelModal() {
     const modal = document.getElementById("wheel-modal");
     modal.style.display = "none";
+
+    const wheel = document.querySelector(".dofus-wheel");
+    wheel.style.animationPlayState = "running"; // Relance l'animation
 }
 
 function spinWheel() {
@@ -50,12 +53,11 @@ function spinWheel() {
     const spinCost = 30000;
 
     if (parsedKamas < spinCost) {
-        alert("Vous n'avez pas assez de kamas pour lancer la roue !");
+        showToast("Vous n'avez pas assez de kamas pour lancer la roue !");
         return;
     }
 
     parsedKamas -= spinCost;
-    console.log("parsedKamas après déduction :", parsedKamas);
     elements.kamas.innerHTML = Math.round(parsedKamas);
 
     if (isSpinning) return; // Empêche de relancer la roue pendant qu'elle tourne
@@ -64,12 +66,12 @@ function spinWheel() {
     const wheel = document.querySelector(".dofus-wheel");
     const dofusItems = document.querySelectorAll(".dofus-item");
 
-    // Ajoute une animation de rotation
-    wheel.style.animation = "spin-animation 2s linear";
+    // Ajoute la classe pour activer l'animation
+    wheel.classList.add("spin");
 
-    // Arrête l'animation après 2 secondes
+    // Arrête l'animation après 3 secondes
     setTimeout(() => {
-        wheel.style.animation = "none";
+        wheel.classList.remove("spin"); // Désactive l'animation
 
         // Sélectionne un Dofus aléatoire
         const randomIndex = Math.floor(Math.random() * dofusItems.length);
@@ -79,11 +81,43 @@ function spinWheel() {
         if (selectedDofus.src.includes("dofusocre.png")) {
             parsedKamas += 100000; // Ajoute 100 000 kamas
             elements.kamas.innerHTML = Math.round(parsedKamas);
-            alert("Félicitations ! Vous avez gagné 100 000 kamas !");
+            showToast("Félicitations ! Vous avez gagné 100 000 kamas !", "wheel-toast");
         } else {
-            alert("Ceci n'est pas encore prêt, mais bientôt !");
+            showToast("Ceci n'est pas encore prêt, mais bientôt !", "wheel-toast");
         }
 
         isSpinning = false; // Permet de relancer la roue
-    }, 2000);
+    }, 3000); // Temps augmenté à 3 secondes
 }
+
+function initializeCarousel() {
+    const wheel = document.querySelector(".dofus-wheel");
+    const dofusItems = Array.from(wheel.children);
+
+    // Duplique les Dofus pour créer un effet infini
+    dofusItems.forEach((item) => {
+        const clone = item.cloneNode(true);
+        wheel.appendChild(clone);
+    });
+}
+
+function showToast(message, customClass = "") {
+    const toastContainer = document.getElementById("toast-container");
+
+    // Crée un nouvel élément toast
+    const toast = document.createElement("div");
+    toast.className = `toast show ${customClass}`;
+    toast.textContent = message;
+
+    // Ajoute le toast au conteneur
+    toastContainer.appendChild(toast);
+
+    // Supprime le toast après 4 secondes
+    setTimeout(() => {
+        toast.classList.remove("show");
+        setTimeout(() => toast.remove(), 500); // Supprime l'élément après l'animation
+    }, 4000);
+}
+
+// Appelez cette fonction lorsque la page est chargée
+window.addEventListener("DOMContentLoaded", initializeCarousel);
