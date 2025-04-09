@@ -74,7 +74,7 @@ function incrementKamas(e) {
     const y = e.offsetY - 20;
     const div = document.createElement('div');
     div.innerHTML = `+${Math.round(kpc)}`;
-    div.style.cssText = `color: red; position: absolute; top: ${y}px; left: ${x}px; font-size: 20px; pointer-events: none;`;
+    div.style.cssText = `color: white; position: absolute; top: ${y}px; left: ${x}px; font-size: 25px; pointer-events: none;`;
     elements.kamaImgContainer.appendChild(div);
     div.classList.add('fade-up');
     setTimeout(() => div.remove(), 800);
