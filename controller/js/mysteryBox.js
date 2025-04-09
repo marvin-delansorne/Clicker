@@ -77,17 +77,17 @@ function spinWheel() {
         const randomIndex = Math.floor(Math.random() * dofusItems.length);
         const selectedDofus = dofusItems[randomIndex];
 
+        // Récupère les informations du Dofus
+        const dofusName = selectedDofus.alt;
+        const dofusCara = selectedDofus.dataset.caraDofus;
+
         // Affiche le résultat
-        if (selectedDofus.src.includes("dofusocre.png")) {
+        if (dofusName === "Ocre") {
             parsedKamas += 100000; // Ajoute 100 000 kamas
             elements.kamas.innerHTML = Math.round(parsedKamas);
-            showToast(
-                "Félicitations ! Vous avez gagné 100 000 kamas !",
-                "wheel-toast",
-                "./public/assets/dofusocre.png"
-            );
+            showToast(`Félicitations ! ${dofusCara}`, "wheel-toast", selectedDofus.src);
         } else {
-            showToast("Ceci n'est pas encore prêt, mais bientôt !", "wheel-toast",  "./public/assets/dofusocre.png");
+            showToast(`Effet : ${dofusCara}`, "wheel-toast", selectedDofus.src);
         }
 
         isSpinning = false; // Permet de relancer la roue
@@ -146,5 +146,45 @@ function showToast(message, customClass = "", imageSrc = null) {
     }, 4000);
 }
 
+async function loadDofusData() {
+    try {
+        const response = await fetch("./public/data.json");
+        if (!response.ok) {
+            throw new Error("Erreur lors du chargement des données JSON");
+        }
+        const data = await response.json();
+        initializeWheel(data.dofus);
+    } catch (error) {
+        console.error("Erreur :", error);
+    }
+}
+
+function initializeWheel(dofusList) {
+    const wheel = document.querySelector(".dofus-wheel");
+    if (!wheel) {
+        console.error("Le conteneur .dofus-wheel est introuvable !");
+        return;
+    }
+
+    // Vide la roue avant d'ajouter les Dofus
+    wheel.innerHTML = "";
+
+    // Ajoute chaque Dofus à la roue
+    dofusList.forEach((dofus) => {
+        const dofusElement = document.createElement("img");
+        dofusElement.src = dofus.image;
+        dofusElement.alt = dofus.nom;
+        dofusElement.classList.add("dofus-item");
+        dofusElement.dataset.caraDofus = dofus["cara-dofus"]; // Ajoute la caractéristique au dataset
+        wheel.appendChild(dofusElement);
+    });
+
+    // Duplique les Dofus pour un effet de carrousel
+    duplicateDofus();
+}
+
 // Appelez cette fonction lorsque la page est chargée
-window.addEventListener("DOMContentLoaded", duplicateDofus);
+window.addEventListener("DOMContentLoaded", () => {
+    duplicateDofus();
+    loadDofusData();
+});
