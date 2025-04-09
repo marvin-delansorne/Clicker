@@ -4,22 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="public/css/styles.css">
+       <script src="./controller/js/index.js" defer></script>
+    <script src="controller/js/mysteryBox.js" derfer></script>
+ 
     <title>Dofus Clicker</title>
 </head>
 <body>
     <div class="game-container">
         <!-- Section gauche avec personnage et dofus -->
         <div class="left-panel">
-            <div class="dofuss-container">
-                <div class="dofus"><img src="../assets/dofuss/red.png" alt="Red dofus"></div>
-                <div class="dofus"><img src="../assets/dofuss/yellow.png" alt="Yellow dofus"></div>
-                <div class="dofus"><img src="../assets/dofuss/blue.png" alt="Blue dofus"></div>
-                <div class="dofus"><img src="../assets/dofuss/green.png" alt="Green dofus"></div>
-                <div class="dofus"><img src="../assets/dofuss/white.png" alt="White dofus"></div>
-                <div class="dofus"><img src="../assets/dofuss/orange.png" alt="Orange dofus"></div>
+            <div class="center-panel">
+                <button class="spin-wheel-btn" onclick="openWheelModal()">Tourner la roue</button>
             </div>
+            <div id="wheel-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close-btn" onclick="closeWheelModal()">&times;</span>
+                <div class="wheel-container">
+                        <div class="dofus-wheel">
+                            <img src="./public/assets/dofusemeraude.png" alt="Dofus Emeraude" class="dofus-item">
+                            <img src="./public/assets/dofusocre.png" alt="Dofus Ocre" class="dofus-item">
+                            <img src="./public/assets/dofuspourpre.png" alt="Dofus Pourpre" class="dofus-item">
+                            <img src="./public/assets/dofusivoire.png" alt="Dofus Ivoire" class="dofus-item">
+                            <img src="./public/assets/dofusebene.png" alt="Dofus Ebène" class="dofus-item">
+                            <img src="./public/assets/dofusturquoise.png" alt="Dofus Turquoise" class="dofus-item">
+                        </div>
+                    </div>
+                    <button class="spin-btn" onclick="spinWheel()">Lancer la roue</button>
+                </div>
+            </div>
+        
             <div class="character">
-                <img src="../assets/character.png" alt="Character">
+                <img src="./public/assets/character.png"alt="character">
             </div>
         </div>
 
@@ -122,6 +137,11 @@
         </div>
     </div>
 
-    <script src="controller/js/index.js"></script>
+    <div id="mystery-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <p id="modal-message"></p>
+        </div>
+    </div>
 </body>
 </html>
