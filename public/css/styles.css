@@ -171,12 +171,21 @@ body {
         .charLvl-hidden {
             visibility: hidden;
         }
+        .charLvl-visible {
+            visibility: visible;
+        }
         #charImg {
-            filter: brightness(0%);
-            opacity: 70%;
             width: 50px;
             height: auto;
             padding: 10px 10px 0 10px;
+        }
+        .charImg-locked {
+            filter: brightness(0%);
+            opacity: 70%;
+        }
+        .charImg-unlocked {
+            filter: brightness(100%);
+            opacity: 100%;
         }
         #charImg:hover {
             opacity: 100%;

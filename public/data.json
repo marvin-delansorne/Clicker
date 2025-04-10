@@ -5,9 +5,7 @@
             "image": "/Clicker/public/assets/personnage/pandawa.png",
             "baseCost": 4950,
             "baseIncrease": 82,
-            "kamaMultiplier": 1.04,
             "costMultiplier": 1.10,
-            "affects": "kps",
             "level": 0,
             "nom-sort": "Picole",
             "attribut": 1,
@@ -18,9 +16,7 @@
             "image": "/Clicker/public/assets/personnage/ecaflip.png",
             "baseCost": 4950,
             "baseIncrease": 82,
-            "kamaMultiplier": 1.04,
             "costMultiplier": 1.10,
-            "affects": "kps",
             "level": 0,
             "nom-sort": "Chance d'écaflip",
             "attribut": 1,
@@ -31,9 +27,7 @@
             "image": "/Clicker/public/assets/personnage/sacrieur.png",
             "baseCost": 4950,
             "baseIncrease": 82,
-            "kamaMultiplier": 1.04,
             "costMultiplier": 1.10,
-            "affects": "kps",
             "level": 0,
             "nom-sort": "Auto-flagellation",
             "attribut": 50,
@@ -44,9 +38,7 @@
             "image": "/Clicker/public/assets/personnage/zobal.png",
             "baseCost": 4950,
             "baseIncrease": 82,
-            "kamaMultiplier": 1.04,
             "costMultiplier": 1.10,
-            "affects": "kps",
             "level": 0,
             "nom-sort": "Masque de clown",
             "attribut": 1,
@@ -57,11 +49,10 @@
             "image": "/Clicker/public/assets/personnage/iop.png",
             "baseCost": 4950,
             "baseIncrease": 82,
-            "kamaMultiplier": 1.04,
             "costMultiplier": 1.10,
-            "affects": "kps",
             "level": 0,
             "nom-sort": "Colère de Iop",
+            "base-attribute": 1,
             "attribut": 1,
             "cara-sort": "Augmente tes améliorations d'1 niveau"
         },
@@ -70,9 +61,7 @@
             "image": "/Clicker/public/assets/personnage/cra.png",
             "baseCost": 4950,
             "baseIncrease": 82,
-            "kamaMultiplier": 1.04,
             "costMultiplier": 1.10,
-            "affects": "kps",
             "level": 0,
             "nom-sort": "Tir à l'arc",
             "attribut": 1,
@@ -83,9 +72,7 @@
             "image": "/Clicker/public/assets/personnage/xelor.png",
             "baseCost": 4950,
             "baseIncrease": 82,
-            "kamaMultiplier": 1.04,
             "costMultiplier": 1.10,
-            "affects": "kps",
             "level": 0,
             "nom-sort": "Gain de temps",
             "attribut": 1.1,
@@ -96,13 +83,11 @@
             "image": "/Clicker/public/assets/personnage/huppermage.png",
             "baseCost": 4950,
             "baseIncrease": 82,
-            "kamaMultiplier": 1.04,
             "costMultiplier": 1.10,
-            "affects": "kps",
             "level": 0,
             "nom-sort": "Epée d'huppermage",
             "attribut": 0.5,
-            "cara-sort": "Augmente d'0.5% les revenus au passif"
+            "cara-sort": "Augmente d'0.5% les revenus passifs"
         }
     ],
     "dofus": [
@@ -135,6 +120,44 @@
             "nom": "Turquoise",
             "image": "/Clicker/public/assets/dofus/turquoise.png",
             "cara-dofus": "Débloque l'huppermage si déjà débloqué augmente de 3 son niveau"
+        }
+    ],
+    "minions": [
+        {
+            "name": "clicker",
+            "baseCost": 10,
+            "baseIncrease": 1,
+            "kamaMultiplier": 1.025,
+            "costMultiplier": 1.115,
+            "affects": "kpc",
+            "level" : 0
+        },
+        {
+            "name": "snouffle",
+            "baseCost": 130,
+            "baseIncrease": 4,
+            "kamaMultiplier": 1.03,
+            "costMultiplier": 1.12,
+            "affects": "kps",
+            "level": 0
+        },
+        {
+            "name": "moumoune",
+            "baseCost": 850,
+            "baseIncrease": 24,
+            "kamaMultiplier": 1.035,
+            "costMultiplier": 1.11,
+            "affects": "kps",
+            "level": 0
+        },
+        {
+            "name": "phortiche",
+            "baseCost": 4950,
+            "baseIncrease": 82,
+            "kamaMultiplier": 1.04,
+            "costMultiplier": 1.10,
+            "affects": "kps",
+            "level": 0
         }
     ]
 }

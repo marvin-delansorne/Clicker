@@ -11,52 +11,24 @@ const elements = {
 
 const upgrades = [
     {
-        name: 'clicker',
         costElement: document.querySelector('.clicker-cost'),
         increaseElement: document.querySelector('.clicker-increase'),
         levelElement: document.querySelector('.clicker-level'),
-        baseCost: 10,
-        baseIncrease: 1,
-        kamaMultiplier: 1.025,
-        costMultiplier: 1.115,
-        affects: 'kpc',
-        level: 0
     },
     {
-        name: 'snouffle',
         costElement: document.querySelector('.snouffle-cost'),
         increaseElement: document.querySelector('.snouffle-increase'),
         levelElement: document.querySelector('.snouffle-level'),
-        baseCost: 130,
-        baseIncrease: 4,
-        kamaMultiplier: 1.03,
-        costMultiplier: 1.12,
-        affects: 'kps',
-        level: 0
     },
     {
-        name: 'moumoune',
         costElement: document.querySelector('.moumoune-cost'),
         increaseElement: document.querySelector('.moumoune-increase'),
         levelElement: document.querySelector('.moumoune-level'),
-        baseCost: 850,
-        baseIncrease: 24,
-        kamaMultiplier: 1.035,
-        costMultiplier: 1.11,
-        affects: 'kps',
-        level: 0
     },
     {
-        name: 'phortiche',
         costElement: document.querySelector('.phortiche-cost'),
         increaseElement: document.querySelector('.phortiche-increase'),
         levelElement: document.querySelector('.phortiche-level'),
-        baseCost: 4950,
-        baseIncrease: 82,
-        kamaMultiplier: 1.04,
-        costMultiplier: 1.10,
-        affects: 'kps',
-        level: 0
     }
 ];
 
