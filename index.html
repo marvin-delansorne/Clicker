@@ -21,25 +21,29 @@
 <body>
     <div class="game-container">
         <div class="left-panel">
-            <h1>Roue de la fortune</h1>
-            <div class="center-panel">
-                <button class="spin-wheel-btn" onclick="openWheelModal()"><img src="./public/assets/buttonwheel.png" alt="Roulette"width="250px"height="250px"></button>
-            </div>
-            <div id="wheel-modal" class="modal">
+            <h3>Roue de la fortune</h3>
+            <button class="spin-wheel-btn" onclick="openWheelModal()">
+                <img src="./public/assets/buttonwheel.png" alt="Roulette" width="250px" height="250px">
+            </button>
+            
+            <!-- Le modal (doit exister dans votre HTML) -->
+            <div id="wheel-modal" class="modal" style="display:none;">
                 <div class="modal-content">
-                    <span class="close-btn" onclick="closeWheelModal()">&times;</span>
-                <div class="wheel-container">
-                    <div class="selection-bar"></div>
-                        <div class="dofus-wheel">
-                            
-                        </div>
+                    <span class="close" onclick="closeWheelModal()">&times;</span>
+                    <div class="wheel-container">
+                        <div class="selection-bar"></div>
+                        <div class="center-marker"></div>
+                        <div class="dofus-wheel"></div>
                     </div>
-                    <button class="spin-btn" onclick="spinWheel()">Lancer la roue</button>
+                    <button class="spin-btn" onclick="spinWheel()">Tourner (50,000 kamas)</button>
                 </div>
             </div>
         
             <div class="character">
                 <img src="./public/assets/character.png"alt="character">
+            </div>
+            <div class="reset-container" style="display: none;">
+                <button id="reset-button" onclick="resetGame()">Reset la partie</button>
             </div>
         </div>
 
@@ -48,9 +52,7 @@
                 <div class="music-toggle">
                     <img id="music-icon" src="./public/assets/music-on.png" alt="Music Toggle" onclick="toggleMusic()" draggable="false">
                 </div>
-                <div class="reset-container" style="display: none;">
-                    <button id="reset-button" onclick="resetGame()">Reset la partie</button>
-                </div>
+               
                 
                 <div class="kamas-counter">
                     <p>Kamas <br /><span class="kamas-cost red-text"></span></p>

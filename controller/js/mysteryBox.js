@@ -1,226 +1,290 @@
-function handleMysteryBoxClick(imageSrc) {
-    const mysteryCost = 30000;
-
-    if (parsedKamas < mysteryCost) {
-        showModal("Vous n'avez pas assez de kamas pour ouvrir cette boîte !");
-        return;
-    }
-
-    // Déduire le coût
-    parsedKamas -= mysteryCost;
-    kamas.innerHTML = Math.round(parsedKamas);
-
-    // Vérifier l'image cliquée
-    if (imageSrc.includes("dofusocre.png")) {
-        parsedKamas += 100000; // Ajouter 100 000 kamas
-        elements.kamas.innerHTML = Math.round(parsedKamas);
-        showModal("Félicitations ! Vous avez gagné 100 000 kamas !");
-    } else {
-        showModal("Ceci n'est pas encore prêt, mais bientôt !", "./public/assets/dofusocre.png");
-    }
-}
-
-function showModal(message) {
-    const modal = document.getElementById("mystery-modal");
-    const modalMessage = document.getElementById("modal-message");
-
-    modalMessage.textContent = message;
-    modal.style.display = "block";
-}
-
-function closeModal() {
-    const modal = document.getElementById("mystery-modal");
-    modal.style.display = "none";
-}
+// Configuration des récompenses
+const rewards = [
+    { id: 1, image: "./public/assets/dofusemeraude.png", name: "Dofus Emeraude", rarity: "legendary", probability: 0.05, kamas: 1000000, weight: 1 },
+    { id: 2, image: "./public/assets/dofusocre.png", name: "Dofus Ocre", rarity: "common", probability: 0.3, kamas: 50000, weight: 6 },
+    { id: 3, image: "./public/assets/dofuspourpre.png", name: "Dofus Pourpre", rarity: "uncommon", probability: 0.25, kamas: 100000, weight: 4 },
+    { id: 4, image: "./public/assets/dofusivoire.png", name: "Dofus Ivoire", rarity: "epic", probability: 0.15, kamas: 500000, weight: 2 },
+    { id: 5, image: "./public/assets/dofusebene.png", name: "Dofus Ebène", rarity: "epic", probability: 0.15, kamas: 500000, weight: 2 },
+    { id: 6, image: "./public/assets/dofusturquoise.png", name: "Dofus Turquoise", rarity: "rare", probability: 0.1, kamas: 250000, weight: 3 }
+];
 
 let isSpinning = false;
+let wheelAnimation = null;
+
+// Fonction pour générer les éléments de la roue
+function generateWheelItems() {
+    const wheel = document.querySelector(".dofus-wheel");
+    wheel.innerHTML = '';
+    
+    let wheelItems = [];
+    rewards.forEach(reward => {
+        for (let i = 0; i < reward.weight; i++) {
+            wheelItems.push(reward);
+        }
+    });
+    
+    wheelItems = shuffleArray(wheelItems);
+    
+    wheelItems.forEach(item => {
+        const img = document.createElement("img");
+        img.src = item.image;
+        img.alt = item.name;
+        img.className = "dofus-item";
+        img.dataset.id = item.id;
+        wheel.appendChild(img);
+    });
+    
+    duplicateWheelItems();
+}
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+function duplicateWheelItems() {
+    const wheel = document.querySelector(".dofus-wheel");
+    const items = Array.from(wheel.children);
+    const targetCount = items.length * 5;
+    
+    while (wheel.children.length < targetCount) {
+        items.forEach(item => {
+            if (wheel.children.length < targetCount) {
+                const clone = item.cloneNode(true);
+                wheel.appendChild(clone);
+            }
+        });
+    }
+}
 
 function openWheelModal() {
     const modal = document.getElementById("wheel-modal");
     modal.style.display = "block";
+    generateWheelItems();
+    resetWheelPosition();
 }
 
 function closeWheelModal() {
     const modal = document.getElementById("wheel-modal");
     modal.style.display = "none";
+    
+    if (isSpinning) {
+        isSpinning = false;
+        cancelAnimationFrame(wheelAnimation);
+        const centerMarker = document.querySelector(".center-marker");
+        if (centerMarker) {
+            centerMarker.style.animation = "none";
+        }
+        const spinBtn = document.querySelector(".spin-btn");
+        if (spinBtn) {
+            spinBtn.disabled = false;
+        }
+    }
+}
 
+function resetWheelPosition() {
     const wheel = document.querySelector(".dofus-wheel");
-    wheel.style.animationPlayState = "running"; // Relance l'animation
+    wheel.style.transition = "none";
+    wheel.style.transform = "translateX(0)";
+}
+
+function selectRandomReward() {
+    const totalProbability = rewards.reduce((sum, reward) => sum + reward.probability, 0);
+    const random = Math.random() * totalProbability;
+    
+    let accumulatedProbability = 0;
+    for (let reward of rewards) {
+        accumulatedProbability += reward.probability;
+        if (random <= accumulatedProbability) {
+            return reward;
+        }
+    }
+    
+    return rewards[0];
+}
+
+function showToast(message) {
+    const toastContainer = document.getElementById("toast-container");
+    if (!toastContainer) return;
+    
+    const toast = document.createElement("div");
+    toast.className = "toast";
+    toast.innerText = message;
+    
+    toastContainer.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.classList.add("show");
+    }, 100);
+    
+    setTimeout(() => {
+        toast.remove();
+    }, 4000);
+}
+
+function showRewardPopup(reward) {
+    const toast = document.createElement("div");
+    toast.className = "toast wheel-toast";
+    toast.innerHTML = `
+        <h3>Félicitations !</h3>
+        <p>Vous avez gagné : <strong>${reward.name}</strong></p>
+        <p>Valeur : <span style="color: #8bc34a;">${reward.kamas} kamas</span></p>
+    `;
+    
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.classList.add("show");
+    }, 100);
+    
+    setTimeout(() => {
+        toast.remove();
+    }, 4000);
 }
 
 function spinWheel() {
-    console.log("SpinWheel appelé, parsedKamas avant :", parsedKamas);
-    const spinCost = 30000;
+    if (isSpinning) return;
 
+    if (typeof parsedKamas === 'undefined' || typeof elements === 'undefined' || !elements.kamas) {
+        if (typeof parsedKamas === 'undefined') parsedKamas = 100000;
+        if (typeof elements === 'undefined' || !elements.kamas) {
+            elements = elements || {};
+            elements.kamas = document.querySelector(".kamas-cost") || { innerHTML: "" };
+        }
+    }
+
+    const spinCost = 50000;
     if (parsedKamas < spinCost) {
-        showToast("Vous n'avez pas assez de kamas pour lancer la roue !");
+        showToast("Vous n'avez pas assez de kamas (50 000 requis) pour lancer la roue !");
         return;
     }
 
     parsedKamas -= spinCost;
     elements.kamas.innerHTML = Math.round(parsedKamas);
-
-    if (isSpinning) return; // Empêche de relancer la roue pendant qu'elle tourne
     isSpinning = true;
 
     const wheel = document.querySelector(".dofus-wheel");
-    const dofusItems = document.querySelectorAll(".dofus-item");
+    const spinBtn = document.querySelector(".spin-btn");
+    const centerMarker = document.querySelector(".center-marker");
 
-    // Sélectionne un Dofus aléatoire
-    const randomIndex = Math.floor(Math.random() * (dofusItems.length / 4)); // Divisé par 4 à cause des duplications
-    const selectedDofus = dofusItems[randomIndex];
+    spinBtn.disabled = true;
+    centerMarker.style.animation = "pulse 0.3s infinite";
 
-    // Calcule la position pour s'arrêter sur le Dofus sélectionné
-    const itemWidth = dofusItems[0].offsetWidth + 20; // Largeur d'un Dofus + l'espacement (gap)
-    const offset = randomIndex * itemWidth; // Position du Dofus sélectionné
-    const visibleWidth = wheel.parentElement.offsetWidth; // Largeur visible de la roue
-    const centerOffset = (visibleWidth - itemWidth) / 2; // Centrer le Dofus sélectionné
+    smoothSpinWheel(wheel, spinBtn, centerMarker);
+}
 
-    // Ajuste la transformation pour centrer le Dofus sélectionné
-    const finalPosition = -(offset - centerOffset);
-    wheel.style.transition = "transform 3s cubic-bezier(0.25, 1, 0.5, 1)"; // Animation fluide
-    wheel.style.transform = `translateX(${finalPosition}px)`; // Utilise translateX pour une roue horizontale
+function smoothSpinWheel(wheel, spinBtn, centerMarker) {
+    const duration = 6000;
+    const startTime = Date.now();
+    const spinDistance = 8000 + Math.floor(Math.random() * 4000); 
 
-    // Réinitialise la position après l'animation
-    setTimeout(() => {
-        wheel.style.transition = "none"; // Désactive la transition pour éviter un saut visible
-        wheel.style.transform = `translateX(0)`; // Réinitialise la position
-
-        // Récupère les informations du Dofus
-        const dofusName = selectedDofus.alt;
-        const dofusCara = selectedDofus.dataset.caraDofus;
-
-        // Affiche le résultat
-        if (dofusName === "Ocre") {
-            parsedKamas += 100000; // Ajoute 100 000 kamas
-            elements.kamas.innerHTML = Math.round(parsedKamas);
-            showToast(`Félicitations ! ${dofusCara}`, "wheel-toast", selectedDofus.src);
+    function update() {
+        const elapsed = Date.now() - startTime;
+        
+        if (elapsed < duration) {
+            const progress = elapsed / duration;
+            const easedProgress = easeOutCubic(progress); 
+            const currentPos = easedProgress * spinDistance;
+            wheel.style.transform = `translateX(-${currentPos}px)`;
+            wheelAnimation = requestAnimationFrame(update);
         } else {
-            showToast(`Effet : ${dofusCara}`, "wheel-toast", selectedDofus.src);
+            wheel.style.transition = "transform 0.5s ease-out";
+            wheel.style.transform = `translateX(-${spinDistance}px)`;
+            
+            setTimeout(() => {
+                detectCenterReward(wheel, spinBtn, centerMarker);
+            }, 600);
         }
+    }
 
-        isSpinning = false; // Permet de relancer la roue
+    function easeOutCubic(t) {
+        return 1 - Math.pow(1 - t, 3);
+    }
+
+    wheel.style.transition = "none";
+    update();
+}
+
+function detectCenterReward(wheel, spinBtn, centerMarker) {
+    const markerRect = centerMarker.getBoundingClientRect();
+    const markerCenter = markerRect.left + markerRect.width / 2;
+
+    let closestItem = null;
+    let smallestDistance = Infinity;
+
+    document.querySelectorAll('.dofus-item').forEach(item => {
+        const itemRect = item.getBoundingClientRect();
+        const itemCenter = itemRect.left + itemRect.width / 2;
+        const distance = Math.abs(itemCenter - markerCenter);
+
+        if (distance < smallestDistance) {
+            smallestDistance = distance;
+            closestItem = item;
+        }
+    });
+
+    if (closestItem) {
+        const rewardId = parseInt(closestItem.dataset.id);
+        const reward = rewards.find(r => r.id === rewardId);
+        finishSpin(reward, spinBtn, centerMarker);
+        highlightWinningItem(closestItem);
+    } else {
+        const randomReward = selectRandomReward();
+        finishSpin(randomReward, spinBtn, centerMarker);
+    }
+}
+
+function highlightWinningItem(item) {
+    item.style.transform = "scale(1.2)";
+    item.style.boxShadow = "0 0 20px gold";
+    item.style.transition = "all 0.3s ease";
+    
+    setTimeout(() => {
+        item.style.transform = "scale(1)";
+        item.style.boxShadow = "none";
     }, 3000);
 }
 
-function duplicateDofus() {
-    const wheel = document.querySelector(".dofus-wheel");
-    if (!wheel) {
-        console.error("Le conteneur .dofus-wheel est introuvable !");
-        return;
-    }
-
-    const dofusItems = Array.from(wheel.children);
-    if (dofusItems.length === 0) {
-        console.error("Aucun Dofus trouvé dans la roue pour duplication !");
-        return;
-    }
-
-    const originalCount = dofusItems.length;
-
-    // Clone les Dofus plusieurs fois pour simuler un effet infini
-    for (let i = 0; i < 4; i++) { // Ajustez le nombre de duplications si nécessaire
-        dofusItems.forEach((item) => {
-            const clone = item.cloneNode(true);
-            wheel.appendChild(clone);
-        });
-    }
-
-    console.log("Dofus dupliqués :", wheel.children.length);
-}
-
-function showToast(message, customClass = "", imageSrc = null) {
-    const toastContainer = document.getElementById("toast-container");
-
-    if (!toastContainer) {
-        console.error("Toast container introuvable !");
-        return;
-    }
-
-    // Crée un nouvel élément toast
-    const toast = document.createElement("div");
-    toast.className = `toast show ${customClass}`;
-
-    // Ajoute le contenu du toast
-    toast.innerHTML = `
-        ${imageSrc ? `<img src="${imageSrc}" alt="Dofus" class="toast-image">` : ""}
-        <span>${message}</span>
-    `;
-
-    // Ajoute le toast au conteneur
-    toastContainer.appendChild(toast);
-
-    // Supprime le toast après 4 secondes
-    setTimeout(() => {
-        toast.classList.remove("show");
-        setTimeout(() => toast.remove(), 500); // Supprime l'élément après l'animation
-    }, 4000);
-}
-
-async function loadDofusData() {
-    try {
-        const response = await fetch("./public/data.json");
-        if (!response.ok) {
-            throw new Error("Erreur lors du chargement des données JSON");
-        }
-        const data = await response.json();
-        initializeWheel(data.dofus);
-    } catch (error) {
-        console.error("Erreur :", error);
-    }
-}
-
-function initializeWheel(dofusList) {
-    const wheel = document.querySelector(".dofus-wheel");
-    if (!wheel) {
-        console.error("Le conteneur .dofus-wheel est introuvable !");
-        return;
-    }
-
-    // Vide la roue avant d'ajouter les Dofus
-    wheel.innerHTML = "";
-
-    // Ajoute chaque Dofus à la roue
-    dofusList.forEach((dofus) => {
-        const dofusElement = document.createElement("img");
-        dofusElement.src = dofus.image;
-        dofusElement.alt = dofus.nom;
-        dofusElement.classList.add("dofus-item");
-        dofusElement.dataset.caraDofus = dofus["cara-dofus"]; // Ajoute la caractéristique au dataset
-        wheel.appendChild(dofusElement);
-    });
-
-    console.log("Dofus ajoutés :", wheel.children.length);
-
-    // Duplique les Dofus pour un effet de carrousel
-    duplicateDofus();
-}
-
-// Sauvegarde l'état de la roue dans le localStorage
-function saveWheelState() {
-    const wheelState = {
-        parsedKamas,
-        isSpinning
-    };
-
-    localStorage.setItem('wheelState', JSON.stringify(wheelState));
-    console.log("État de la roue sauvegardé :", wheelState);
-}
-
-// Charge l'état de la roue depuis le localStorage
-function loadWheelState() {
-    const savedWheelState = localStorage.getItem('wheelState');
-    if (!savedWheelState) return;
-
-    const wheelState = JSON.parse(savedWheelState);
-    parsedKamas = wheelState.parsedKamas || 0;
-    isSpinning = wheelState.isSpinning || false;
-
+function finishSpin(reward, spinBtn, centerMarker) {
+    isSpinning = false;
+    spinBtn.disabled = false;
+    centerMarker.style.animation = "none";
+    cancelAnimationFrame(wheelAnimation);
+    
+    parsedKamas += reward.kamas;
     elements.kamas.innerHTML = Math.round(parsedKamas);
-    console.log("État de la roue chargé :", wheelState);
+    showRewardPopup(reward);
+    
+    setTimeout(() => {
+        resetWheelPosition();
+        generateWheelItems();
+    }, 3000);
 }
 
-// Appelez cette fonction lorsque la page est chargée
 window.addEventListener("DOMContentLoaded", () => {
-    loadDofusData();
+    if (typeof parsedKamas === 'undefined') {
+        window.parsedKamas = 100000;
+    }
+    
+    if (typeof elements === 'undefined') {
+        window.elements = {
+            kamas: document.querySelector(".kamas-cost") || { innerHTML: "" }
+        };
+    }
+    
+    generateWheelItems();
+    
+    if (!document.querySelector(".spin-wheel-btn")) {
+        const leftPanel = document.querySelector(".left-panel");
+        if (leftPanel) {
+            const btn = document.createElement("button");
+            btn.className = "spin-wheel-btn";
+            btn.onclick = openWheelModal;
+            btn.innerHTML = `<img src="./public/assets/buttonwheel.png" alt="Roulette" width="250px" height="250px">`;
+            leftPanel.appendChild(btn);
+        }
+    }
 });
