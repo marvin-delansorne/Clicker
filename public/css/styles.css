@@ -545,16 +545,23 @@ body {
 }
 .wheel-container {
     position: relative;
-    overflow: hidden;
     width: 100%;
     height: 200px;
+    overflow: hidden;
+    margin: 20px 0;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    border: 2px solid var(--primary-color);
 }
 
 
 .dofus-wheel {
     display: flex;
+    height: 100%;
     align-items: center;
     will-change: transform;
+    position: relative;
+    overflow: visible;
 }
 .dofus-wheel.spin {
     animation: carousel-animation 10s linear infinite; 
@@ -564,8 +571,8 @@ body {
     height: 150px;
     object-fit: contain;
     flex-shrink: 0;
-    margin: 0 5px;
-    transition: all 0.3s;
+    margin: 0 10px;
+    transition: transform 0.3s;
 }
 .dofus-item:hover {
     transform: scale(1.1);
@@ -660,13 +667,14 @@ body {
 /* Styles pour le marqueur central */
 .center-marker {
     position: absolute;
-    left: 50%;
     top: 0;
-    height: 100%;
-    width: 2px;
-    background-color: red;
-    z-index: 10;
+    left: 50%;
     transform: translateX(-50%);
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(to bottom, transparent, red, transparent);
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+    z-index: 10;
 }
 
 .center-marker::before, .center-marker::after {
@@ -744,4 +752,3 @@ body {
     object-fit: contain;
     flex-shrink: 0;
 }
-

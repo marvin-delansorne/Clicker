@@ -10,29 +10,152 @@ const rewards = [
 
 let isSpinning = false;
 let wheelAnimation = null;
-let selectedReward = null;
-const itemWidth = 160; // Largeur fixe d'un item + marge
 
-// Fonction pour trouver l'item sous le marqueur
-function getItemUnderMarker() {
+// Fonction pour générer les éléments de la roue
+function generateWheelItems() {
     const wheel = document.querySelector(".dofus-wheel");
-    const wheelRect = wheel.getBoundingClientRect();
-    const centerX = wheelRect.left + wheelRect.width / 2;
+    wheel.innerHTML = '';
     
-    const items = Array.from(document.querySelectorAll(".dofus-item"));
-    for (let item of items) {
-        const itemRect = item.getBoundingClientRect();
-        if (itemRect.left <= centerX && itemRect.right >= centerX) {
-            return item;
+    let wheelItems = [];
+    rewards.forEach(reward => {
+        for (let i = 0; i < reward.weight; i++) {
+            wheelItems.push(reward);
         }
-    }
-    return null;
+    });
+    
+    wheelItems = shuffleArray(wheelItems);
+    
+    wheelItems.forEach(item => {
+        const img = document.createElement("img");
+        img.src = item.image;
+        img.alt = item.name;
+        img.className = "dofus-item";
+        img.dataset.id = item.id;
+        wheel.appendChild(img);
+    });
+    
+    duplicateWheelItems();
 }
 
-// Fonction pour faire tourner la roue
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+function duplicateWheelItems() {
+    const wheel = document.querySelector(".dofus-wheel");
+    const items = Array.from(wheel.children);
+    const targetCount = items.length * 5;
+    
+    while (wheel.children.length < targetCount) {
+        items.forEach(item => {
+            if (wheel.children.length < targetCount) {
+                const clone = item.cloneNode(true);
+                wheel.appendChild(clone);
+            }
+        });
+    }
+}
+
+function openWheelModal() {
+    const modal = document.getElementById("wheel-modal");
+    modal.style.display = "block";
+    generateWheelItems();
+    resetWheelPosition();
+}
+
+function closeWheelModal() {
+    const modal = document.getElementById("wheel-modal");
+    modal.style.display = "none";
+    
+    if (isSpinning) {
+        isSpinning = false;
+        cancelAnimationFrame(wheelAnimation);
+        const centerMarker = document.querySelector(".center-marker");
+        if (centerMarker) {
+            centerMarker.style.animation = "none";
+        }
+        const spinBtn = document.querySelector(".spin-btn");
+        if (spinBtn) {
+            spinBtn.disabled = false;
+        }
+    }
+}
+
+function resetWheelPosition() {
+    const wheel = document.querySelector(".dofus-wheel");
+    wheel.style.transition = "none";
+    wheel.style.transform = "translateX(0)";
+}
+
+function selectRandomReward() {
+    const totalProbability = rewards.reduce((sum, reward) => sum + reward.probability, 0);
+    const random = Math.random() * totalProbability;
+    
+    let accumulatedProbability = 0;
+    for (let reward of rewards) {
+        accumulatedProbability += reward.probability;
+        if (random <= accumulatedProbability) {
+            return reward;
+        }
+    }
+    
+    return rewards[0];
+}
+
+function showToast(message) {
+    const toastContainer = document.getElementById("toast-container");
+    if (!toastContainer) return;
+    
+    const toast = document.createElement("div");
+    toast.className = "toast";
+    toast.innerText = message;
+    
+    toastContainer.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.classList.add("show");
+    }, 100);
+    
+    setTimeout(() => {
+        toast.remove();
+    }, 4000);
+}
+
+function showRewardPopup(reward) {
+    const toast = document.createElement("div");
+    toast.className = "toast wheel-toast";
+    toast.innerHTML = `
+        <h3>Félicitations !</h3>
+        <p>Vous avez gagné : <strong>${reward.name}</strong></p>
+        <p>Valeur : <span style="color: #8bc34a;">${reward.kamas} kamas</span></p>
+    `;
+    
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.classList.add("show");
+    }, 100);
+    
+    setTimeout(() => {
+        toast.remove();
+    }, 4000);
+}
+
 function spinWheel() {
     if (isSpinning) return;
-    
+
+    if (typeof parsedKamas === 'undefined' || typeof elements === 'undefined' || !elements.kamas) {
+        if (typeof parsedKamas === 'undefined') parsedKamas = 100000;
+        if (typeof elements === 'undefined' || !elements.kamas) {
+            elements = elements || {};
+            elements.kamas = document.querySelector(".kamas-cost") || { innerHTML: "" };
+        }
+    }
+
     const spinCost = 50000;
     if (parsedKamas < spinCost) {
         showToast("Vous n'avez pas assez de kamas (50 000 requis) pour lancer la roue !");
@@ -42,142 +165,110 @@ function spinWheel() {
     parsedKamas -= spinCost;
     elements.kamas.innerHTML = Math.round(parsedKamas);
     isSpinning = true;
-    
+
     const wheel = document.querySelector(".dofus-wheel");
     const spinBtn = document.querySelector(".spin-btn");
     const centerMarker = document.querySelector(".center-marker");
-    
-    spinBtn.disabled = true;
-    centerMarker.style.animation = "pulse 0.5s infinite";
 
-    // Sélection aléatoire de la récompense
-    selectedReward = selectRandomReward();
-    
-    // Trouver tous les items correspondants
-    const allItems = Array.from(document.querySelectorAll(".dofus-item"));
-    const targetItems = allItems.filter(item => item.dataset.id == selectedReward.id);
-    
-    if (targetItems.length === 0) {
-        resetSpinState();
-        showToast("Erreur lors de la rotation. Veuillez réessayer.");
-        return;
-    }
-    
-    // Choisir un item dans la première copie de la roue
-    const targetItem = targetItems.find(item => {
-        const index = allItems.indexOf(item);
-        return index < allItems.length / 5;
-    }) || targetItems[0];
-    
-    // Calcul de la position d'arrêt pour centrer l'item
-    const wheelRect = wheel.getBoundingClientRect();
-    const itemRect = targetItem.getBoundingClientRect();
-    const stopPosition = (itemRect.left - wheelRect.left) + (itemWidth / 2) - (wheelRect.width / 2);
-    
-    // Animation
-    animateWheel(wheel, stopPosition, spinBtn, centerMarker);
+    spinBtn.disabled = true;
+    centerMarker.style.animation = "pulse 0.3s infinite";
+
+    smoothSpinWheel(wheel, spinBtn, centerMarker);
 }
 
-// Nouvelle fonction d'animation
-function animateWheel(wheel, stopPosition, spinBtn, centerMarker) {
-    const duration = 6000; // 6 secondes
+function smoothSpinWheel(wheel, spinBtn, centerMarker) {
+    const duration = 6000;
     const startTime = Date.now();
-    const spinDistance = 8000 + stopPosition; // Distance totale
-    
+    const spinDistance = 8000 + Math.floor(Math.random() * 4000); 
+
     function update() {
         const elapsed = Date.now() - startTime;
-        const progress = Math.min(elapsed / duration, 1);
         
-        // Courbe d'animation personnalisée
-        let easing;
-        if (progress < 0.7) {
-            easing = easeOutQuad(progress / 0.7);
-        } else {
-            easing = 0.7 + 0.3 * easeOutBack((progress - 0.7) / 0.3);
-        }
-        
-        const currentPos = easing * spinDistance;
-        wheel.style.transform = `translateX(-${currentPos}px)`;
-        
-        if (progress < 1) {
+        if (elapsed < duration) {
+            const progress = elapsed / duration;
+            const easedProgress = easeOutCubic(progress); 
+            const currentPos = easedProgress * spinDistance;
+            wheel.style.transform = `translateX(-${currentPos}px)`;
             wheelAnimation = requestAnimationFrame(update);
         } else {
-            // Ajustement final précis
-            wheel.style.transition = "transform 0.5s cubic-bezier(0.2, 0.8, 0.4, 1)";
-            wheel.style.transform = `translateX(-${stopPosition}px)`;
+            wheel.style.transition = "transform 0.5s ease-out";
+            wheel.style.transform = `translateX(-${spinDistance}px)`;
             
             setTimeout(() => {
-                // Récupérer l'item sous le marqueur après l'arrêt
-                const winningItem = getItemUnderMarker();
-                if (winningItem) {
-                    const rewardId = winningItem.dataset.id;
-                    const actualReward = rewards.find(r => r.id == rewardId);
-                    finishSpin(actualReward, spinBtn, centerMarker);
-                } else {
-                    finishSpin(selectedReward, spinBtn, centerMarker);
-                }
-            }, 500);
+                detectCenterReward(wheel, spinBtn, centerMarker);
+            }, 600);
         }
     }
-    
+
+    function easeOutCubic(t) {
+        return 1 - Math.pow(1 - t, 3);
+    }
+
     wheel.style.transition = "none";
     update();
 }
 
-// Fonction pour terminer la rotation
+function detectCenterReward(wheel, spinBtn, centerMarker) {
+    const markerRect = centerMarker.getBoundingClientRect();
+    const markerCenter = markerRect.left + markerRect.width / 2;
+
+    let closestItem = null;
+    let smallestDistance = Infinity;
+
+    document.querySelectorAll('.dofus-item').forEach(item => {
+        const itemRect = item.getBoundingClientRect();
+        const itemCenter = itemRect.left + itemRect.width / 2;
+        const distance = Math.abs(itemCenter - markerCenter);
+
+        if (distance < smallestDistance) {
+            smallestDistance = distance;
+            closestItem = item;
+        }
+    });
+
+    if (closestItem) {
+        const rewardId = parseInt(closestItem.dataset.id);
+        const reward = rewards.find(r => r.id === rewardId);
+        finishSpin(reward, spinBtn, centerMarker);
+        highlightWinningItem(closestItem);
+    } else {
+        const randomReward = selectRandomReward();
+        finishSpin(randomReward, spinBtn, centerMarker);
+    }
+}
+
+function highlightWinningItem(item) {
+    item.style.transform = "scale(1.2)";
+    item.style.boxShadow = "0 0 20px gold";
+    item.style.transition = "all 0.3s ease";
+    
+    setTimeout(() => {
+        item.style.transform = "scale(1)";
+        item.style.boxShadow = "none";
+    }, 3000);
+}
+
 function finishSpin(reward, spinBtn, centerMarker) {
     isSpinning = false;
     spinBtn.disabled = false;
     centerMarker.style.animation = "none";
     cancelAnimationFrame(wheelAnimation);
     
-    // Mettre à jour les kamas du joueur
     parsedKamas += reward.kamas;
     elements.kamas.innerHTML = Math.round(parsedKamas);
-    
-    // Afficher la récompense
     showRewardPopup(reward);
     
-    // Mettre en évidence l'item gagné
-    const allItems = document.querySelectorAll(`.dofus-item[data-id="${reward.id}"]`);
-    allItems.forEach(item => {
-        const itemRect = item.getBoundingClientRect();
-        const wheelRect = document.querySelector(".dofus-wheel").getBoundingClientRect();
-        const centerX = wheelRect.left + wheelRect.width / 2;
-        
-        // Seul l'item près du centre est mis en évidence
-        if (Math.abs(itemRect.left + itemWidth/2 - centerX) < 20) {
-            item.style.transform = "scale(1.15)";
-            item.style.boxShadow = "0 0 25px gold";
-            item.style.zIndex = "10";
-            item.style.transition = "all 0.3s";
-            
-            setTimeout(() => {
-                item.style.transform = "scale(1)";
-                item.style.boxShadow = "none";
-                item.style.zIndex = "";
-            }, 3000);
-        }
-    });
-    
-    // Réinitialisation différée
     setTimeout(() => {
         resetWheelPosition();
         generateWheelItems();
     }, 3000);
 }
 
-// Fonctions d'easing supplémentaires
-function easeOutBack(t) {
-    const c1 = 1.70158;
-    const c3 = c1 + 1;
-    return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
-}
-
-// Initialisation au chargement de la page
 window.addEventListener("DOMContentLoaded", () => {
-    // Initialisation des variables
-    if (typeof parsedKamas === 'undefined') window.parsedKamas = 100000;
+    if (typeof parsedKamas === 'undefined') {
+        window.parsedKamas = 100000;
+    }
+    
     if (typeof elements === 'undefined') {
         window.elements = {
             kamas: document.querySelector(".kamas-cost") || { innerHTML: "" }
@@ -186,19 +277,14 @@ window.addEventListener("DOMContentLoaded", () => {
     
     generateWheelItems();
     
-    // Ajout de l'écouteur d'événements
-    const spinBtn = document.querySelector(".spin-wheel-btn");
-    if (spinBtn) {
-        spinBtn.addEventListener('click', openWheelModal);
+    if (!document.querySelector(".spin-wheel-btn")) {
+        const leftPanel = document.querySelector(".left-panel");
+        if (leftPanel) {
+            const btn = document.createElement("button");
+            btn.className = "spin-wheel-btn";
+            btn.onclick = openWheelModal;
+            btn.innerHTML = `<img src="./public/assets/buttonwheel.png" alt="Roulette" width="250px" height="250px">`;
+            leftPanel.appendChild(btn);
+        }
     }
 });
-
-// Assurez-vous que la fonction est bien définie dans la portée globale
-window.openWheelModal = function() {
-    const modal = document.getElementById("wheel-modal");
-    if (!modal) return;
-    
-    modal.style.display = "block";
-    generateWheelItems();
-    resetWheelPosition();
-};

@@ -129,12 +129,13 @@ function toggleAchievements() {
 }
 
 function checkAchievements() {
-    let newAchievements = false;
-
+    console.log("checkAchievements appelé, parsedKamas :", parsedKamas);
     gameState.parsedKamas = parsedKamas;
     gameState.kps = kps;
     gameState.hasMaxedUpgrade = upgrades.some(u => u.level >= 100);
     gameState.allUpgradesMaxed = upgrades.every(u => u.level >= 100);
+    
+    let newAchievements = false;
     
     achievements.forEach(achievement => {
         if (!achievement.unlocked && achievement.condition(gameState)) {

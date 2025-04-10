@@ -17,21 +17,19 @@
 <body>
     <div class="game-container">
         <div class="left-panel">
-            <button class="spin-wheel-btn">
-                <img src="./public/assets/buttonwheel.png" alt="Roulette" width="250" height="250">
+            <button class="spin-wheel-btn" onclick="openWheelModal()">
+                <img src="./public/assets/buttonwheel.png" alt="Roulette" width="250px" height="250px">
             </button>
             
-            <div id="wheel-modal" class="modal">
+            <!-- Le modal (doit exister dans votre HTML) -->
+            <div id="wheel-modal" class="modal" style="display:none;">
                 <div class="modal-content">
-                    <span class="close-btn" onclick="closeWheelModal()">&times;</span>
-                    <h2>Roulette Mystère</h2>
+                    <span class="close" onclick="closeWheelModal()">&times;</span>
                     <div class="wheel-container">
                         <div class="center-marker"></div>
-                        <div class="dofus-wheel">
-                            <!-- Les items seront générés dynamiquement par JavaScript -->
-                        </div>
+                        <div class="dofus-wheel"></div>
                     </div>
-                    <button class="spin-btn" onclick="spinWheel()">Lancer la roue (50 000 kamas)</button>
+                    <button class="spin-btn" onclick="spinWheel()">Tourner (50,000 kamas)</button>
                 </div>
             </div>
             
@@ -141,6 +139,5 @@
 
     <div id="achievements-container"></div>
     <div id="toast-container"></div>
-   
 </body>
 </html>
