@@ -8,10 +8,38 @@ const rewards = [
     { id: 6, image: "./public/assets/dofusturquoise.png", name: "Dofus Turquoise", rarity: "rare", probability: 0.1, kamas: 250000, weight: 3 }
 ];
 
+// Variables globales
 let isSpinning = false;
 let wheelAnimation = null;
+let currentSpinCost = 50000; // Prix initial
+const baseSpinCost = 50000; // Prix de base pour réinitialisation
+const spinCostMultiplier = 1.5; // Augmentation de 50% à chaque utilisation
+let spinCount = 0; // Nombre de spins effectués
 
-// Fonction pour générer les éléments de la roue
+// Initialisation des variables globales si elles n'existent pas
+if (typeof parsedKamas === 'undefined') {
+    window.parsedKamas = 100000;
+}
+if (typeof elements === 'undefined') {
+    window.elements = {
+        kamas: document.querySelector(".kamas-cost") || { innerHTML: "" }
+    };
+}
+
+// Fonction pour formater les nombres avec séparateurs
+function formatNumber(num) {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+// Mise à jour du texte du bouton de spin
+function updateSpinButtonText() {
+    const spinBtn = document.querySelector(".spin-btn");
+    if (spinBtn) {
+        spinBtn.textContent = `Tourner (${formatNumber(Math.round(currentSpinCost))} kamas)`;
+    }
+}
+
+// Génération des éléments de la roue
 function generateWheelItems() {
     const wheel = document.querySelector(".dofus-wheel");
     wheel.innerHTML = '';
@@ -35,8 +63,10 @@ function generateWheelItems() {
     });
     
     duplicateWheelItems();
+    updateSpinButtonText();
 }
 
+// Mélange aléatoire du tableau
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -45,6 +75,7 @@ function shuffleArray(array) {
     return array;
 }
 
+// Duplication des éléments pour une roue infinie
 function duplicateWheelItems() {
     const wheel = document.querySelector(".dofus-wheel");
     const items = Array.from(wheel.children);
@@ -60,6 +91,7 @@ function duplicateWheelItems() {
     }
 }
 
+// Gestion de l'ouverture/fermeture du modal
 function openWheelModal() {
     const modal = document.getElementById("wheel-modal");
     modal.style.display = "block";
@@ -85,12 +117,14 @@ function closeWheelModal() {
     }
 }
 
+// Réinitialisation de la position de la roue
 function resetWheelPosition() {
     const wheel = document.querySelector(".dofus-wheel");
     wheel.style.transition = "none";
     wheel.style.transform = "translateX(0)";
 }
 
+// Sélection aléatoire d'une récompense basée sur les probabilités
 function selectRandomReward() {
     const totalProbability = rewards.reduce((sum, reward) => sum + reward.probability, 0);
     const random = Math.random() * totalProbability;
@@ -106,6 +140,7 @@ function selectRandomReward() {
     return rewards[0];
 }
 
+// Affichage des notifications
 function showToast(message) {
     const toastContainer = document.getElementById("toast-container");
     if (!toastContainer) return;
@@ -131,7 +166,7 @@ function showRewardPopup(reward) {
     toast.innerHTML = `
         <h3>Félicitations !</h3>
         <p>Vous avez gagné : <strong>${reward.name}</strong></p>
-        <p>Valeur : <span style="color: #8bc34a;">${reward.kamas} kamas</span></p>
+        <p>Valeur : <span style="color: #8bc34a;">${formatNumber(reward.kamas)} kamas</span></p>
     `;
     
     document.body.appendChild(toast);
@@ -145,26 +180,23 @@ function showRewardPopup(reward) {
     }, 4000);
 }
 
+// Fonction principale pour faire tourner la roue
 function spinWheel() {
     if (isSpinning) return;
 
-    if (typeof parsedKamas === 'undefined' || typeof elements === 'undefined' || !elements.kamas) {
-        if (typeof parsedKamas === 'undefined') parsedKamas = 100000;
-        if (typeof elements === 'undefined' || !elements.kamas) {
-            elements = elements || {};
-            elements.kamas = document.querySelector(".kamas-cost") || { innerHTML: "" };
-        }
-    }
-
-    const spinCost = 50000;
-    if (parsedKamas < spinCost) {
-        showToast("Vous n'avez pas assez de kamas (50 000 requis) pour lancer la roue !");
+    if (parsedKamas < currentSpinCost) {
+        showToast(`Vous n'avez pas assez de kamas (${formatNumber(Math.round(currentSpinCost))} requis) pour lancer la roue !`);
         return;
     }
 
-    parsedKamas -= spinCost;
-    elements.kamas.innerHTML = Math.round(parsedKamas);
+    parsedKamas -= currentSpinCost;
+    elements.kamas.innerHTML = formatNumber(Math.round(parsedKamas));
     isSpinning = true;
+    spinCount++;
+
+    // Augmentation du prix pour le prochain tour
+    currentSpinCost = Math.round(currentSpinCost * spinCostMultiplier);
+    updateSpinButtonText();
 
     const wheel = document.querySelector(".dofus-wheel");
     const spinBtn = document.querySelector(".spin-btn");
@@ -176,6 +208,7 @@ function spinWheel() {
     smoothSpinWheel(wheel, spinBtn, centerMarker);
 }
 
+// Animation fluide de la roue
 function smoothSpinWheel(wheel, spinBtn, centerMarker) {
     const duration = 6000;
     const startTime = Date.now();
@@ -208,6 +241,7 @@ function smoothSpinWheel(wheel, spinBtn, centerMarker) {
     update();
 }
 
+// Détection de la récompense gagnante
 function detectCenterReward(wheel, spinBtn, centerMarker) {
     const markerRect = centerMarker.getBoundingClientRect();
     const markerCenter = markerRect.left + markerRect.width / 2;
@@ -237,6 +271,7 @@ function detectCenterReward(wheel, spinBtn, centerMarker) {
     }
 }
 
+// Mise en valeur de l'élément gagnant
 function highlightWinningItem(item) {
     item.style.transform = "scale(1.2)";
     item.style.boxShadow = "0 0 20px gold";
@@ -248,6 +283,7 @@ function highlightWinningItem(item) {
     }, 3000);
 }
 
+// Finalisation du spin
 function finishSpin(reward, spinBtn, centerMarker) {
     isSpinning = false;
     spinBtn.disabled = false;
@@ -255,7 +291,7 @@ function finishSpin(reward, spinBtn, centerMarker) {
     cancelAnimationFrame(wheelAnimation);
     
     parsedKamas += reward.kamas;
-    elements.kamas.innerHTML = Math.round(parsedKamas);
+    elements.kamas.innerHTML = formatNumber(Math.round(parsedKamas));
     showRewardPopup(reward);
     
     setTimeout(() => {
@@ -264,17 +300,14 @@ function finishSpin(reward, spinBtn, centerMarker) {
     }, 3000);
 }
 
+// Réinitialisation du prix (si nécessaire)
+function resetSpinCost() {
+    currentSpinCost = baseSpinCost;
+    updateSpinButtonText();
+}
+
+// Initialisation au chargement
 window.addEventListener("DOMContentLoaded", () => {
-    if (typeof parsedKamas === 'undefined') {
-        window.parsedKamas = 100000;
-    }
-    
-    if (typeof elements === 'undefined') {
-        window.elements = {
-            kamas: document.querySelector(".kamas-cost") || { innerHTML: "" }
-        };
-    }
-    
     generateWheelItems();
     
     if (!document.querySelector(".spin-wheel-btn")) {

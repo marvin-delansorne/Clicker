@@ -149,4 +149,113 @@ setInterval(() => {
     elements.kamas.innerHTML = Math.round(parsedKamas);
     elements.kpcText.innerHTML = Math.round(kpc);
     elements.kpsText.innerHTML = Math.round(kps);
+    checkForResetButton();
 }, 100);
+
+// Sauvegarde l'état du jeu dans le localStorage
+function saveGameState() {
+    const gameState = {
+        parsedKamas,
+        kpc,
+        kps,
+        upgrades: upgrades.map(upgrade => ({
+            name: upgrade.name,
+            level: upgrade.level,
+            cost: upgrade.cost,
+            increase: upgrade.increase
+        }))
+    };
+
+    localStorage.setItem('gameState', JSON.stringify(gameState));
+    console.log("État du jeu sauvegardé :", gameState);
+}
+
+// Charge l'état du jeu depuis le localStorage
+function loadGameState() {
+    const savedState = localStorage.getItem('gameState');
+    if (!savedState) return;
+
+    const gameState = JSON.parse(savedState);
+    console.log("État du jeu chargé :", gameState);
+
+    parsedKamas = gameState.parsedKamas || 0;
+    kpc = gameState.kpc || 1;
+    kps = gameState.kps || 0;
+
+    gameState.upgrades.forEach(savedUpgrade => {
+        const upgrade = upgrades.find(u => u.name === savedUpgrade.name);
+        if (upgrade) {
+            upgrade.level = savedUpgrade.level;
+            upgrade.cost = savedUpgrade.cost;
+            upgrade.increase = savedUpgrade.increase;
+        }
+    });
+
+    upgrades.forEach(updateUpgradeDisplay);
+    elements.kamas.innerHTML = Math.round(parsedKamas);
+    elements.kpcText.innerHTML = Math.round(kpc);
+    elements.kpsText.innerHTML = Math.round(kps);
+}
+
+// Sauvegarde automatique toutes les 10 secondes
+setInterval(saveGameState, 10000);
+
+// Sauvegarde lors de la fermeture de la page
+window.addEventListener('beforeunload', () => {
+    saveGameState();
+    saveAchievements();
+    saveWheelState();
+});
+
+// Chargement des données au démarrage
+window.addEventListener('DOMContentLoaded', () => {
+    loadGameState();
+    loadAchievements();
+    loadWheelState();
+});
+
+// Vérifie si le bouton de réinitialisation doit être affiché
+function checkForResetButton() {
+    const resetContainer = document.querySelector('.reset-container');
+    if (parsedKamas >= 10) {
+        resetContainer.style.display = 'block'; // Affiche le bouton
+    } else {
+        resetContainer.style.display = 'none'; // Cache le bouton
+    }
+}
+
+// Réinitialise la partie
+function resetGame() {
+    if (!confirm("Êtes-vous sûr de vouloir réinitialiser la partie ? Cette action est irréversible.")) {
+        return;
+    }
+
+    // Réinitialise les variables principales
+    parsedKamas = 0;
+    kpc = 1;
+    kps = 0;
+
+    // Réinitialise les upgrades
+    upgrades.forEach(upgrade => {
+        upgrade.level = 0;
+        upgrade.cost = upgrade.baseCost;
+        upgrade.increase = upgrade.baseIncrease;
+        updateUpgradeDisplay(upgrade);
+    });
+
+    // Met à jour l'affichage
+    elements.kamas.innerHTML = Math.round(parsedKamas);
+    elements.kpcText.innerHTML = Math.round(kpc);
+    elements.kpsText.innerHTML = Math.round(kps);
+
+    // Cache le bouton de reset
+    const resetContainer = document.querySelector('.reset-container');
+    resetContainer.style.display = 'none';
+
+    // Supprime les données du localStorage
+    localStorage.removeItem('gameState');
+    localStorage.removeItem('achievementsState');
+    localStorage.removeItem('wheelState');
+
+    console.log("Partie réinitialisée !");
+}

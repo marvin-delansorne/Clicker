@@ -151,6 +151,7 @@ function checkAchievements() {
     
     if (newAchievements) {
         updateAchievementsDisplay();
+        saveAchievements();
     }
 }
 
@@ -198,6 +199,34 @@ function updateAchievementsDisplay() {
     `).join('');
 }
 
+// Sauvegarde les succès dans le localStorage
+function saveAchievements() {
+    const achievementsState = achievements.map(achievement => ({
+        id: achievement.id,
+        unlocked: achievement.unlocked
+    }));
+
+    localStorage.setItem('achievementsState', JSON.stringify(achievementsState));
+    console.log("Succès sauvegardés :", achievementsState);
+}
+
+// Charge les succès depuis le localStorage
+function loadAchievements() {
+    const savedAchievements = localStorage.getItem('achievementsState');
+    if (!savedAchievements) return;
+
+    const achievementsState = JSON.parse(savedAchievements);
+    achievementsState.forEach(savedAchievement => {
+        const achievement = achievements.find(a => a.id === savedAchievement.id);
+        if (achievement) {
+            achievement.unlocked = savedAchievement.unlocked;
+        }
+    });
+
+    updateAchievementsDisplay();
+    console.log("Succès chargés :", achievementsState);
+}
+
 const originalIncrementKamas = incrementKamas;
 incrementKamas = function(e) {
     originalIncrementKamas(e);
@@ -214,4 +243,7 @@ buyUpgrade = function(upgradeName) {
 
 setInterval(checkAchievements, 1000);
 
-window.addEventListener('DOMContentLoaded', initAchievements);
+window.addEventListener('DOMContentLoaded', () => {
+    initAchievements();
+    loadAchievements();
+});
