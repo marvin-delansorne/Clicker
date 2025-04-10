@@ -196,6 +196,30 @@ function initializeWheel(dofusList) {
     duplicateDofus();
 }
 
+// Sauvegarde l'état de la roue dans le localStorage
+function saveWheelState() {
+    const wheelState = {
+        parsedKamas,
+        isSpinning
+    };
+
+    localStorage.setItem('wheelState', JSON.stringify(wheelState));
+    console.log("État de la roue sauvegardé :", wheelState);
+}
+
+// Charge l'état de la roue depuis le localStorage
+function loadWheelState() {
+    const savedWheelState = localStorage.getItem('wheelState');
+    if (!savedWheelState) return;
+
+    const wheelState = JSON.parse(savedWheelState);
+    parsedKamas = wheelState.parsedKamas || 0;
+    isSpinning = wheelState.isSpinning || false;
+
+    elements.kamas.innerHTML = Math.round(parsedKamas);
+    console.log("État de la roue chargé :", wheelState);
+}
+
 // Appelez cette fonction lorsque la page est chargée
 window.addEventListener("DOMContentLoaded", () => {
     loadDofusData();
