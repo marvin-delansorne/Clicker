@@ -10,8 +10,8 @@ const rewards = [
 
 let isSpinning = false;
 let wheelAnimation = null;
+let currentSpinCost = 50000;
 
-// Fonction pour générer les éléments de la roue
 function generateWheelItems() {
     const wheel = document.querySelector(".dofus-wheel");
     wheel.innerHTML = '';
@@ -65,6 +65,7 @@ function openWheelModal() {
     modal.style.display = "block";
     generateWheelItems();
     resetWheelPosition();
+    updateSpinButtonText();
 }
 
 function closeWheelModal() {
@@ -89,6 +90,18 @@ function resetWheelPosition() {
     const wheel = document.querySelector(".dofus-wheel");
     wheel.style.transition = "none";
     wheel.style.transform = "translateX(0)";
+}
+
+function updateSpinButtonText() {
+    const spinBtn = document.querySelector(".spin-btn");
+    if (spinBtn) {
+        spinBtn.innerHTML = `
+            <span>Tourner</span>
+            <span>(${currentSpinCost.toLocaleString()}</span>
+            <img src="./public/assets/kamas.png" class="kama-icon" alt="kama">
+            <span>)</span>
+        `;
+    }
 }
 
 function selectRandomReward() {
@@ -131,7 +144,7 @@ function showRewardPopup(reward) {
     toast.innerHTML = `
         <h3>Félicitations !</h3>
         <p>Vous avez gagné : <strong>${reward.name}</strong></p>
-        <p>Valeur : <span style="color: #8bc34a;">${reward.kamas} kamas</span></p>
+        <p>Valeur : <span style="color: #8bc34a;">${reward.kamas.toLocaleString()} kamas</span></p>
     `;
     
     document.body.appendChild(toast);
@@ -156,13 +169,14 @@ function spinWheel() {
         }
     }
 
-    const spinCost = 50000;
-    if (parsedKamas < spinCost) {
-        showToast("Vous n'avez pas assez de kamas (50 000 requis) pour lancer la roue !");
+    if (parsedKamas < currentSpinCost) {
+        showToast(`Vous n'avez pas assez de kamas (${currentSpinCost.toLocaleString()} requis) pour lancer la roue !`);
         return;
     }
 
-    parsedKamas -= spinCost;
+    parsedKamas -= currentSpinCost;
+    // Augmentation du prix de 20% au lieu d'un montant fixe
+    currentSpinCost = Math.round(currentSpinCost * 1.2);
     elements.kamas.innerHTML = Math.round(parsedKamas);
     isSpinning = true;
 
@@ -257,6 +271,7 @@ function finishSpin(reward, spinBtn, centerMarker) {
     parsedKamas += reward.kamas;
     elements.kamas.innerHTML = Math.round(parsedKamas);
     showRewardPopup(reward);
+    updateSpinButtonText();
     
     setTimeout(() => {
         resetWheelPosition();
@@ -276,6 +291,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }
     
     generateWheelItems();
+    updateSpinButtonText();
     
     if (!document.querySelector(".spin-wheel-btn")) {
         const leftPanel = document.querySelector(".left-panel");

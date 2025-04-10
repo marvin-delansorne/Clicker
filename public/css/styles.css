@@ -63,6 +63,7 @@ body {
     display: flex;
     flex-direction: column;
     padding: 10px;;
+    top: 10px;
 }
 
 .red-text{
@@ -100,7 +101,7 @@ body {
 }
 
 .character img {
-    max-width: 100%;
+    max-width: 200px;
     height: auto;
 }
 
@@ -164,6 +165,7 @@ body {
         flex-direction: column;
         justify-content: space-between;
         height: 50%;
+        padding-bottom: 100px;
         #charLvl {
             display: flex;
             justify-content: center;
@@ -203,6 +205,10 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+h3{
+    font-size: 24px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .right-panel h3 {
@@ -543,7 +549,31 @@ body {
     border: none; /* Supprime la bordure */
     padding: 0;
 }
+.close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    color: #f8d485;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
 
+.close:hover {
+    color: #ffffff;
+    transform: rotate(90deg) scale(1.1);
+}
+
+.close:active {
+    transform: rotate(90deg) scale(0.9);
+}
 #wheel-modal .close-btn {
     color: #f8d485;
     font-size: 24px;
@@ -603,64 +633,87 @@ body {
 
 
 .spin-btn {
-    margin-top: 20px;
-    padding: 10px 20px;
-    background-color: var(--secondary-color);
-    color:var(--primary-color);
+    margin: 20px auto 0;
+    padding: 12px 25px;
+    background: linear-gradient(to bottom, #E0A905, #c79100);
+    color: #5A361A;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
+    width: fit-content;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 18px;
+    font-weight: bold;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    display: block;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+.spin-btn .kama-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 5px;
 }
 
 .spin-btn:hover {
-    background-color:rgb(55, 30, 6);
-    color:var(--secondary-color);
+    background: linear-gradient(to bottom, #f8c100, #e0a905);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+}
+
+.spin-btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .spin-wheel-btn{
-   background-color: transparent;
-    border: none;
-    cursor: pointer;
-    padding-top: 50px;
-    
-}
-
-.spin-wheel-btn img {
-    animation: slowSpin 10s linear infinite; /* Animation infinie avec une rotation lente */
-    transition: transform 0.3s ease;
-}
-
-.spin-wheel-btn img:hover {
-    transform: scale(1.1); /* Agrandit légèrement l'image au survol */
-}
-
-@keyframes slowSpin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg); /* Rotation complète */
-    }
-}
-
-@keyframes moveRandom {
-    0% {
-        transform: translate(0, 0) rotate(0deg);
-    }
-    25% {
-        transform: translate(10px, -10px) rotate(10deg);
-    }
-    50% {
-        transform: translate(-10px, 10px) rotate(-10deg);
-    }
-    75% {
-        transform: translate(10px, 10px) rotate(5deg);
-    }
-    100% {
-        transform: translate(0, 0) rotate(0deg);
-    }
-}
+    background-color: transparent;
+     border: none;
+     cursor: pointer;
+     padding-top: 50px;
+     
+ }
+ 
+ .spin-wheel-btn img {
+    filter: drop-shadow(0 0 5px rgba(224, 169, 5, 0.5));
+     animation: slowSpin 10s linear infinite; /* Animation infinie avec une rotation lente */
+     transition: transform 0.3s ease;
+ }
+ 
+ .spin-wheel-btn img:hover {
+     transform: scale(1.1); /* Agrandit légèrement l'image au survol */
+ }
+ 
+ @keyframes slowSpin {
+     from {
+         transform: rotate(0deg);
+     }
+     to {
+         transform: rotate(360deg); /* Rotation complète */
+     }
+ }
+ 
+ @keyframes moveRandom {
+     0% {
+         transform: translate(0, 0) rotate(0deg);
+     }
+     25% {
+         transform: translate(10px, -10px) rotate(10deg);
+     }
+     50% {
+         transform: translate(-10px, 10px) rotate(-10deg);
+     }
+     75% {
+         transform: translate(10px, 10px) rotate(5deg);
+     }
+     100% {
+         transform: translate(0, 0) rotate(0deg);
+     }
+ }
 
 #toast-container {
     position: fixed;
@@ -775,9 +828,7 @@ body {
 }
 
 .reset-container {
-    text-align: center;
-    margin-top: 20px;
-}
+    text-align: center;}
 
 #reset-button {
     z-index: 1002;

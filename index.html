@@ -8,12 +8,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jaro:opsz@6..72&family=Montserrat:ital,wght@0,401;1,401&display=swap" rel="stylesheet">
-       <script src="./controller/js/index.js" defer></script>
-        <script src="./controller/js/achievements.js" defer></script> 
-        <script src="controller/js/mysteryBox.js" defer></script>
-        <script src="./controller/js/toggleMusic.js"></script>
+    <script src="./controller/js/index.js" defer></script>
+    <script src="./controller/js/achievements.js" defer></script> 
+    <script src="controller/js/mysteryBox.js" defer></script>
+    <script src="./controller/js/toggleMusic.js"></script>
 
- 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <title>Dofus Clicker</title>
     <script src="controller/js/char.js"></script>
@@ -26,7 +25,6 @@
                 <img src="./public/assets/buttonwheel.png" alt="Roulette" width="250px" height="250px">
             </button>
             
-            <!-- Le modal (doit exister dans votre HTML) -->
             <div id="wheel-modal" class="modal" style="display:none;">
                 <div class="modal-content">
                     <span class="close" onclick="closeWheelModal()">&times;</span>
@@ -35,12 +33,12 @@
                         <div class="center-marker"></div>
                         <div class="dofus-wheel"></div>
                     </div>
-                    <button class="spin-btn" onclick="spinWheel()">Tourner (50,000 kamas)</button>
+                    <button class="spin-btn" onclick="spinWheel()"></button>
                 </div>
             </div>
         
             <div class="character">
-                <img src="./public/assets/character.png"alt="character">
+                <img src="./public/assets/character.png" alt="character">
             </div>
             <div class="reset-container" style="display: none;">
                 <button id="reset-button" onclick="resetGame()">Reset la partie</button>
@@ -53,10 +51,8 @@
                     <img id="music-icon" src="./public/assets/music-on.png" alt="Music Toggle" onclick="toggleMusic()" draggable="false">
                 </div>
                
-                
                 <div class="kamas-counter">
                     <p>Kamas <br /><span class="kamas-cost red-text"></span></p>
-
                 </div>
             </div>
             
@@ -68,9 +64,7 @@
             </div>
             
             <div id="charContainer" class="chars-container">
-                <!-- <div>
-                    <img id="charImg" src="" alt="">
-                </div> -->
+                <!-- Les personnages seront ajoutés dynamiquement -->
             </div>
         </div>
 
@@ -142,13 +136,10 @@
         </div>
     </div>
 
-
-
     <div id="achievements-container"></div>
     <div id="toast-container"></div>
     <audio id="background-music" loop>
         <source src="./public/assets/sound/Dofus Fan OST I - Ballade en Amakna.mp3" type="audio/mpeg">
     </audio>
-   
 </body>
 </html>
