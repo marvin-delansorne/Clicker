@@ -8,9 +8,19 @@ const rewards = [
     { id: 6, image: "./public/assets/dofusturquoise.png", name: "Dofus Turquoise", rarity: "rare", probability: 0.1, kamas: 250000, weight: 3 }
 ];
 
+// Gestion audio
+const wheelTickSound = new Audio('./public/assets/sound/click.mp3');
+const wheelWinSound = new Audio('./public/assets/sound/win.wav');
+let lastPlayedItemId = null;
 let isSpinning = false;
 let wheelAnimation = null;
 let currentSpinCost = 50000;
+
+// Initialisation des sons
+wheelTickSound.volume = 0.3;
+wheelWinSound.volume = 0.7;
+wheelTickSound.preload = 'auto';
+wheelWinSound.preload = 'auto';
 
 function generateWheelItems() {
     const wheel = document.querySelector(".dofus-wheel");
@@ -30,7 +40,7 @@ function generateWheelItems() {
         img.src = item.image;
         img.alt = item.name;
         img.className = "dofus-item";
-        img.dataset.id = item.id;
+        img.dataset.id = `${item.id}-${Math.random().toString(36).substr(2, 9)}`; // ID unique
         wheel.appendChild(img);
     });
     
@@ -54,6 +64,7 @@ function duplicateWheelItems() {
         items.forEach(item => {
             if (wheel.children.length < targetCount) {
                 const clone = item.cloneNode(true);
+                clone.dataset.id = `${item.dataset.id.split('-')[0]}-${Math.random().toString(36).substr(2, 9)}`;
                 wheel.appendChild(clone);
             }
         });
@@ -175,7 +186,6 @@ function spinWheel() {
     }
 
     parsedKamas -= currentSpinCost;
-    // Augmentation du prix de 20% au lieu d'un montant fixe
     currentSpinCost = Math.round(currentSpinCost * 1.2);
     elements.kamas.innerHTML = Math.round(parsedKamas);
     isSpinning = true;
@@ -187,22 +197,34 @@ function spinWheel() {
     spinBtn.disabled = true;
     centerMarker.style.animation = "pulse 0.3s infinite";
 
-    smoothSpinWheel(wheel, spinBtn, centerMarker);
+    // Déblocage audio via interaction utilisateur
+    wheelTickSound.play().then(() => {
+        wheelTickSound.pause();
+        wheelTickSound.currentTime = 0;
+        smoothSpinWheel(wheel, spinBtn, centerMarker);
+    }).catch(e => {
+        console.log("Autoplay bloqué, continuation sans son initial");
+        smoothSpinWheel(wheel, spinBtn, centerMarker);
+    });
 }
 
 function smoothSpinWheel(wheel, spinBtn, centerMarker) {
     const duration = 6000;
     const startTime = Date.now();
-    const spinDistance = 8000 + Math.floor(Math.random() * 4000); 
+    const spinDistance = 8000 + Math.floor(Math.random() * 4000);
+    let lastPositions = {};
 
     function update() {
         const elapsed = Date.now() - startTime;
         
         if (elapsed < duration) {
             const progress = elapsed / duration;
-            const easedProgress = easeOutCubic(progress); 
+            const easedProgress = easeOutCubic(progress);
             const currentPos = easedProgress * spinDistance;
             wheel.style.transform = `translateX(-${currentPos}px)`;
+            
+            detectItemsInTriggerZone(centerMarker);
+            
             wheelAnimation = requestAnimationFrame(update);
         } else {
             wheel.style.transition = "transform 0.5s ease-out";
@@ -211,6 +233,39 @@ function smoothSpinWheel(wheel, spinBtn, centerMarker) {
             setTimeout(() => {
                 detectCenterReward(wheel, spinBtn, centerMarker);
             }, 600);
+        }
+    }
+
+    function detectItemsInTriggerZone(marker) {
+        const markerRect = marker.getBoundingClientRect();
+        const triggerLeft = markerRect.left - 15;
+        const triggerRight = markerRect.right + 15;
+        
+        document.querySelectorAll('.dofus-item').forEach(item => {
+            const itemRect = item.getBoundingClientRect();
+            const itemId = item.dataset.id;
+            
+            // Vérifie si l'item chevauche la zone de déclenchement
+            if (itemRect.right > triggerLeft && itemRect.left < triggerRight) {
+                if (lastPlayedItemId !== itemId) {
+                    item.classList.add('passing');
+                    playItemSound();
+                    lastPlayedItemId = itemId;
+                    
+                    setTimeout(() => item.classList.remove('passing'), 300);
+                }
+            }
+        });
+    }
+
+    function playItemSound() {
+        try {
+            const sound = wheelTickSound.cloneNode();
+            sound.volume = 0.3;
+            sound.currentTime = 0;
+            sound.play().catch(e => console.log("Son ignoré (policy)"));
+        } catch (e) {
+            console.error("Erreur audio:", e);
         }
     }
 
@@ -241,7 +296,7 @@ function detectCenterReward(wheel, spinBtn, centerMarker) {
     });
 
     if (closestItem) {
-        const rewardId = parseInt(closestItem.dataset.id);
+        const rewardId = parseInt(closestItem.dataset.id.split('-')[0]);
         const reward = rewards.find(r => r.id === rewardId);
         finishSpin(reward, spinBtn, centerMarker);
         highlightWinningItem(closestItem);
@@ -268,6 +323,10 @@ function finishSpin(reward, spinBtn, centerMarker) {
     centerMarker.style.animation = "none";
     cancelAnimationFrame(wheelAnimation);
     
+    // Jouer le son de victoire
+    wheelWinSound.currentTime = 0;
+    wheelWinSound.play().catch(e => console.log("Erreur son victoire:", e));
+    
     parsedKamas += reward.kamas;
     elements.kamas.innerHTML = Math.round(parsedKamas);
     showRewardPopup(reward);
@@ -289,6 +348,10 @@ window.addEventListener("DOMContentLoaded", () => {
             kamas: document.querySelector(".kamas-cost") || { innerHTML: "" }
         };
     }
+    
+    // Préchargement des sons
+    wheelTickSound.load();
+    wheelWinSound.load();
     
     generateWheelItems();
     updateSpinButtonText();

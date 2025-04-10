@@ -631,7 +631,14 @@ h3{
     }  
 }
 
-
+.dofus-item.passing {
+    animation: pulse-scale 0.3s ease-out;
+}
+@keyframes pulse-scale {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
 .spin-btn {
     margin: 20px auto 0;
     padding: 12px 25px;
@@ -781,6 +788,7 @@ h3{
     background: linear-gradient(to bottom, transparent, red, transparent);
     box-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
     z-index: 10;
+    pointer-events: none;
 }
 
 .center-marker::before, .center-marker::after {
@@ -830,19 +838,57 @@ h3{
 .reset-container {
     text-align: center;}
 
-#reset-button {
-    z-index: 1002;
-    padding: 10px 20px;
-    background-color: var(--primary-color);
-    color: var(--secondary-color);
-    border: var(--secondary-color) 2px solid;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
-}
-
-#reset-button:hover {
-   transform: scale(0.2s);
-}
+    #reset-button {
+        z-index: 1002;
+        padding: 10px 20px;
+        background: linear-gradient(to bottom, #6b3a17, #5A361A);
+        color: #E0A905;
+        border: 2px solid #E0A905;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        transition: all 0.2s ease;
+        box-shadow: 
+            0 2px 4px rgba(0, 0, 0, 0.2),
+            inset 0 1px 1px rgba(255, 215, 0, 0.1);
+        text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    #reset-button:hover {
+        background: linear-gradient(to bottom, #7c441c, #6b3a17);
+        color: #FFD700;
+        border-color: #FFD700;
+        box-shadow: 
+            0 3px 6px rgba(0, 0, 0, 0.3),
+            inset 0 1px 1px rgba(255, 215, 0, 0.2);
+        transform: translateY(-1px);
+    }
+    
+    #reset-button:active {
+        transform: translateY(1px);
+        box-shadow: 
+            0 1px 2px rgba(0, 0, 0, 0.2),
+            inset 0 1px 1px rgba(255, 215, 0, 0.05);
+    }
+    
+    /* Effet de lumière dorée subtile au survol */
+    #reset-button:hover::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+            to bottom right,
+            rgba(255, 255, 255, 0) 45%,
+            rgba(255, 215, 0, 0.1) 50%,
+            rgba(255, 255, 255, 0) 55%
+        );
+        transform: rotate(30deg);
+        opacity: 0.6;
+        pointer-events: none;
+    }
