@@ -231,7 +231,7 @@ function resetGame() {
     }
 
     // Réinitialise les variables principales
-    parsedKamas = 0;
+    parsedKamas = 5000000;
     kpc = 1;
     kps = 0;
 
