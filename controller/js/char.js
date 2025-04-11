@@ -210,7 +210,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
 
                     if (index >= 5) {
-                        charPrice.classList.add("span-hidden")
+                        charPriceDiv.classList.add("span-hidden")
                     }
 
                 // console.log(`Personnage ajouté : ${personnage.nom}, Image : ${personnage.image}`);
