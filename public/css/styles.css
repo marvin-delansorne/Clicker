@@ -192,7 +192,7 @@ body {
             scale: 1.1;
             cursor: pointer;
         }
-        #charPriceSpan {
+        #charPriceDiv {
             display: flex;
             align-items: center;
             justify-content: space-around;

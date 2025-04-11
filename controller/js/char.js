@@ -51,14 +51,18 @@ document.addEventListener("DOMContentLoaded", () => {
                     charImg.alt = personnage.nom;
                     charDiv.appendChild(charImg);
 
+                    const charPriceDiv = document.createElement("div");
+                    charPriceDiv.setAttribute("id", "charPriceDiv")
+                    charDiv.appendChild(charPriceDiv);
+
                     const charPrice = document.createElement("span");
                     charPrice.setAttribute("id", "charPriceSpan");
                     charPrice.textContent = personnage.baseCost;
-                    charDiv.appendChild(charPrice);
+                    charPriceDiv.appendChild(charPrice);
 
                     const charKama = document.createElement("img");
                     charKama.src = "/Clicker/public/assets/kama.png";
-                    charPrice.appendChild(charKama);
+                    charPriceDiv.appendChild(charKama);
 
                     // Ajouter un événement de clic pour acheter/améliorer le personnage
                     charDiv.addEventListener("click", () => buyCharacter(personnage, charLvlLvl, charPrice));
@@ -75,25 +79,24 @@ document.addEventListener("DOMContentLoaded", () => {
                         // passif : Pandawa
                         if (effect.includes("Réduit de")) {
                             const reduction = attribute * level / 100; // Réduction en pourcentage
-                    
+                        
                             upgrades.forEach(upgrade => {
                                 upgrade.cost = Math.round(upgrade.cost * (1 - reduction));
                                 updateUpgradeDisplay(upgrade);
                             });
-                    
+                        
+                            // Mettre à jour les coûts des personnages
                             data.personnage.forEach(perso => {
-                                if (perso.nom !== personnage.nom) { // Exclure le Pandawa
-                                    perso.baseCost = Math.round(perso.baseCost * (1 - reduction));
-                                    const charDiv = document.querySelector(`.charDiv[data-nom="${perso.nom}"]`);
-                                    if (charDiv) {
-                                        const charPrice = charDiv.querySelector(".charPriceSpan");
-                                        if (charPrice) {
-                                            charPrice.textContent = perso.baseCost;
-                                        }
+                                perso.baseCost = Math.round(perso.baseCost * (1 - reduction));
+                                const charDiv = document.querySelector(`.charDiv[data-nom="${perso.nom}"]`);
+                                if (charDiv) {
+                                    const charPrice = charDiv.querySelector("#charPriceSpan");
+                                    if (charPrice) {
+                                        charPrice.textContent = perso.baseCost; // Met à jour le prix affiché
                                     }
                                 }
                             });
-                        } 
+                        }
                         // passif : Ecaflip
                         else if (effect.includes("chance sur deux")) {
                             console.log("Passif non implémenté : Chance d'obtenir une boîte mystère");
@@ -121,15 +124,24 @@ document.addEventListener("DOMContentLoaded", () => {
                         // passif : Iop
                         else if (effect.includes("Augmente tes améliorations")) {
                             upgrades.forEach(upgrade => {
-                                upgrade.level += 1;
-                                upgrade.increase = parseFloat((upgrade.increase * upgrade.kamaMultiplier).toFixed(2));
-                                upgrade.cost = Math.round(upgrade.cost * upgrade.costMultiplier);
-                                updateUpgradeDisplay(upgrade);
-                                buyUpgrade("clicker");
-                                buyUpgrade("snouffle");
-                                buyUpgrade("momoon");
-                                buyUpgrade("phortiche");
+                                if (upgrade.level < 100) { // Vérifie que le niveau n'est pas déjà au maximum
+                                    upgrade.level += 1;
+                                    upgrade.increase = parseFloat((upgrade.increase * upgrade.kamaMultiplier).toFixed(2));
+                                    upgrade.cost = Math.round(upgrade.cost * upgrade.costMultiplier);
+                                    updateUpgradeDisplay(upgrade); // Met à jour l'affichage
+
+                                    // Met à jour kps ou kpc en fonction de l'upgrade
+                                    if (upgrade.affects === 'kps') {
+                                        kps += upgrade.baseIncrease;
+                                    } else if (upgrade.affects === 'kpc') {
+                                        kpc += upgrade.baseIncrease;
+                                    }
+                                }
                             });
+
+                            // Met à jour l'affichage des valeurs kps et kpc
+                            elements.kpsText.innerHTML = Math.round(kps);
+                            elements.kpcText.innerHTML = Math.round(kpc);
                         }
                     }
                     
@@ -169,6 +181,8 @@ document.addEventListener("DOMContentLoaded", () => {
                             charImg.classList.remove("charImg-locked");
                             charImg.classList.add("charImg-unlocked");
                         }
+                    
+                        saveGameState(); // Sauvegarde après achat
                     }
                     function buyUpgrade(upgradeName) {
                         const upgrade = upgrades.find(u => u.name === upgradeName);
