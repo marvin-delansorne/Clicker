@@ -1,4 +1,4 @@
-let parsedKamas = 5000000;
+let parsedKamas = 0;
 let kpc = 1;
 let kps = 0;
 
