@@ -101,7 +101,7 @@ body {
 }
 
 .character img {
-    max-width: 200px;
+    width: 200px;
     height: auto;
 }
 
@@ -154,9 +154,7 @@ body {
 }
 
 .chars-container {
-    width: 40%;
     display: flex;
-    flex-wrap: nowrap;
     justify-content: center;
     align-items: flex-end;
     gap: 40px;
@@ -164,7 +162,6 @@ body {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        height: 50%;
         padding-bottom: 100px;
         #charLvl {
             display: flex;
@@ -183,7 +180,7 @@ body {
             padding: 10px 10px 0 10px;
         }
         .charImg-locked {
-            filter: brightness(0%);
+            filter: brightness(0%) drop-shadow(0 0 5px rgba(224, 169, 5, 0.5));
             opacity: 70%;
         }
         .charImg-unlocked {
@@ -195,7 +192,7 @@ body {
             scale: 1.1;
             cursor: pointer;
         }
-        span {
+        #charPriceSpan {
             display: flex;
             align-items: center;
             justify-content: space-around;
@@ -204,6 +201,9 @@ body {
                 height: 20px;
                 width: auto;
             }
+        }
+        .span-hidden {
+            visibility: hidden;
         }
     }
 }

@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             charContainer.innerHTML = "";
 
-            data.personnage.forEach(personnage => {
+            data.personnage.forEach((personnage, index) => {
                 const charDiv = document.createElement("div");
                 charDiv.setAttribute("class", "charDiv");
                 charDiv.setAttribute("data-nom", personnage.nom);
@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     charDiv.appendChild(charImg);
 
                     const charPrice = document.createElement("span");
-                    charPrice.setAttribute("class", "charPriceSpan");
+                    charPrice.setAttribute("id", "charPriceSpan");
                     charPrice.textContent = personnage.baseCost;
                     charDiv.appendChild(charPrice);
 
@@ -125,6 +125,10 @@ document.addEventListener("DOMContentLoaded", () => {
                                 upgrade.increase = parseFloat((upgrade.increase * upgrade.kamaMultiplier).toFixed(2));
                                 upgrade.cost = Math.round(upgrade.cost * upgrade.costMultiplier);
                                 updateUpgradeDisplay(upgrade);
+                                buyUpgrade("clicker");
+                                buyUpgrade("snouffle");
+                                buyUpgrade("momoon");
+                                buyUpgrade("phortiche");
                             });
                         }
                     }
@@ -165,6 +169,34 @@ document.addEventListener("DOMContentLoaded", () => {
                             charImg.classList.remove("charImg-locked");
                             charImg.classList.add("charImg-unlocked");
                         }
+                    }
+                    function buyUpgrade(upgradeName) {
+                        const upgrade = upgrades.find(u => u.name === upgradeName);
+                        if (!upgrade || parsedKamas < upgrade.cost) return;
+                        
+                        if (upgrade.level >= 100) {
+                            alert("Niveau maximum atteint (100) pour cet upgrade !");
+                            return;
+                        }
+                    
+                        parsedKamas -= upgrade.cost;
+                        elements.kamas.innerHTML = Math.round(parsedKamas);
+                    
+                        upgrade.level += 1;
+                        upgrade.increase = parseFloat((upgrade.increase * upgrade.kamaMultiplier).toFixed(2));
+                        upgrade.cost = Math.round(upgrade.cost * upgrade.costMultiplier);
+                    
+                        if (upgrade.affects === 'kpc') {
+                            kpc += upgrade.baseIncrease;
+                        } else {
+                            kps += upgrade.baseIncrease;
+                        }
+                    
+                        updateUpgradeDisplay(upgrade);
+                    }
+
+                    if (index >= 5) {
+                        charPrice.classList.add("span-hidden")
                     }
 
                 // console.log(`Personnage ajouté : ${personnage.nom}, Image : ${personnage.image}`);

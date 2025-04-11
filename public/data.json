@@ -8,7 +8,7 @@
             "costMultiplier": 1.10,
             "level": 0,
             "nom-sort": "Picole",
-            "attribut": 1,
+            "attribut": 0.1,
             "cara-sort": "Réduit de 1% le coût des améliorations"
         },
         {
@@ -59,9 +59,6 @@
         {
             "nom": "Crâ",
             "image": "/Clicker/public/assets/personnage/cra.png",
-            "baseCost": 4950,
-            "baseIncrease": 82,
-            "costMultiplier": 1.10,
             "level": 0,
             "nom-sort": "Tir à l'arc",
             "attribut": 1,
@@ -70,9 +67,6 @@
         {
             "nom": "Xélor",
             "image": "/Clicker/public/assets/personnage/xelor.png",
-            "baseCost": 4950,
-            "baseIncrease": 82,
-            "costMultiplier": 1.10,
             "level": 0,
             "nom-sort": "Gain de temps",
             "attribut": 1.1,
@@ -81,9 +75,6 @@
         {
             "nom": "Huppermage",
             "image": "/Clicker/public/assets/personnage/huppermage.png",
-            "baseCost": 4950,
-            "baseIncrease": 82,
-            "costMultiplier": 1.10,
             "level": 0,
             "nom-sort": "Epée d'huppermage",
             "attribut": 0.5,
@@ -158,6 +149,48 @@
             "costMultiplier": 1.10,
             "affects": "kps",
             "level": 0
+        }
+    ], 
+    "skins": [
+        {
+            "id": 0,
+            "image": "/Clicker/public/assets/personnage/skin0.png"
+        },
+        {
+            "id": 1,
+            "image": "/Clicker/public/assets/personnage/skin1.png"
+        },
+        {
+            "id": 2,
+            "image": "/Clicker/public/assets/personnage/skin2.png"
+        },
+        {
+            "id": 3,
+            "image": "/Clicker/public/assets/personnage/skin3.png"
+        },
+        {
+            "id": 4,
+            "image": "/Clicker/public/assets/personnage/skin4.png"
+        },
+        {
+            "id": 5,
+            "image": "/Clicker/public/assets/personnage/skin5.png"
+        },
+        {
+            "id": 6,
+            "image": "/Clicker/public/assets/personnage/skin6.png"
+        },
+        {
+            "id": 7,
+            "image": "/Clicker/public/assets/personnage/skin7.png"
+        },
+        {
+            "id": 8,
+            "image": "/Clicker/public/assets/personnage/skin8.png"
+        },
+        {
+            "id": 9,
+            "image": "/Clicker/public/assets/personnage/skin9.png"
         }
     ]
 }
