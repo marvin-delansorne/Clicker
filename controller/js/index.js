@@ -231,7 +231,7 @@ function resetGame() {
     }
 
     // Réinitialise les variables principales
-    parsedKamas = 5000000;
+    parsedKamas = 50000;
     kpc = 1;
     kps = 0;
 
@@ -242,6 +242,19 @@ function resetGame() {
         upgrade.increase = upgrade.baseIncrease;
         updateUpgradeDisplay(upgrade);
     });
+
+    // Réinitialise les personnages
+    fetch("/Clicker/public/data.json")
+        .then(response => response.json())
+        .then(data => {
+            data.personnage.forEach(personnage => {
+                personnage.level = 0;
+                personnage.baseCost = personnage.initialCost || personnage.baseCost; // Assurez-vous que `initialCost` est défini dans le JSON
+            });
+
+            saveCharactersState(data); // Sauvegarde l'état réinitialisé des personnages
+            loadCharactersState(data); // Recharge les personnages réinitialisés
+        });
 
     // Met à jour l'affichage
     elements.kamas.innerHTML = Math.round(parsedKamas);
@@ -256,6 +269,7 @@ function resetGame() {
     localStorage.removeItem('gameState');
     localStorage.removeItem('achievementsState');
     localStorage.removeItem('wheelState');
+    localStorage.removeItem('charactersState'); // Supprime les personnages sauvegardés
 
     console.log("Partie réinitialisée !");
 }
